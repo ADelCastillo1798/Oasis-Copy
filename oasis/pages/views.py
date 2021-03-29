@@ -26,3 +26,15 @@ def index(request):
 def clientcreation(request):
 
     return render(request, 'clientcreation.html')
+
+def landingpage(request):
+    return render(request, 'LandingPage.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def messaging(request):
+    return render(request, 'messaging.html')
+
+def search(request):
+    return render(request, 'search.html')
