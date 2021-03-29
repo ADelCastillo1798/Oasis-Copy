@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oasis</title>
-</head>
-<body>
-    <div>hello world</div>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Oasis Home</h1>
+    <p>Textbooks can be dry, but buying them doesn't have to be. Welcome to the Oasis.</p>
+    <h2>Some stuff</h2>
+    <p>Current listings:</p>
+    <ul>
+        <li><strong>Books:</strong> {{ num_books }}</li>
+        <li><strong>Listings:</strong> {{ num_listings }}</li>
+        <li><strong>Users</strong> {{ num_users }}</li>
+    </ul>
+{% endblock %}
