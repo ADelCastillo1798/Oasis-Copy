@@ -1,12 +1,14 @@
 from django.db import models
 import uuid # Required for unique listings
+from django.forms import ModelForm
+
 
 # Create your models here.
 
 class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    date_added = models.DateField(auto_now_add=True, help_text='date added')
+    password = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name 
