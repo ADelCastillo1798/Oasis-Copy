@@ -3,7 +3,7 @@
 
 
 {% block content %}
-<form method='POST'>
+<form class ="col-sm-10 mx-auto" method='POST'>
     {%csrf_token%}
     {{form}}
 <button type='submit'>Submit</button>
