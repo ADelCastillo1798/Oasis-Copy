@@ -3,10 +3,13 @@
 
 
 {% block content %}
-    <h1 class="text-center col-sm-10 mx-auto">Welcome to Oasis</h1>
-    <form class ="col-sm-10 mx-auto" method="post">
-    	{% csrf_token %}
-    	{% crispy form %} 
-	</form>
-	<button class="btn btn-primary d-block mx-auto" type="submit">Create Profile</button>
+<h1 class="text-center col-sm-10 mx-auto">Welcome to Oasis</h1>
+<form class ="col-sm-10 mx-auto" method="post">
+	{% csrf_token %}
+	{% crispy form %} 
+	<a href="">
+		<input class="btn btn-primary d-block mx-auto" type="submit">Create Profile</button>
+	</a>
+</form>
+
 {% endblock %}
