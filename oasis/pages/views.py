@@ -6,6 +6,7 @@ from django.views import generic
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import RegistrationForm
+from .forms import UserRegistrationForm
 from django.contrib import messages
 
 
@@ -30,16 +31,16 @@ def home(request):
 
 def clientcreation(request):
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request)
-            return redirect('home')
+            # raw_password = form.cleaned_data.get('password1')
+            # user = authenticate(username=username, password=raw_password)
+            # login(request)
+            return redirect('/')
     else:
-        form = RegistrationForm()
+        form = UserRegistrationForm()
     return render(request, 'clientcreation.html', {'form': form})
 
 def login(request):
