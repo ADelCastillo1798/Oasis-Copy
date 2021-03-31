@@ -63,8 +63,6 @@ def login(request):
                     template_name = "login.html",
                     context={"form":form})
 
-    return render(request, 'clientcreation.html')
-
 def landingpage(request):
     return render(request, 'LandingPage.html')
 

@@ -5,7 +5,7 @@
 {% block content %}
 <form class ="col-sm-10 mx-auto" method='POST'>
     {%csrf_token%}
-    {{form}}
+    {{form|crispy}}
 <button type='submit'>Submit</button>
 Already Have An Account? <a href='#'>Login</a>
 </form>
