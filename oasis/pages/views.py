@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from pages.models import User, Book, Listing
+from pages.models import Book, Listing
 
 from django.views import generic
 from django.contrib.auth import login, authenticate
@@ -18,12 +18,10 @@ def home(request):
     # Generate counts of some of the main objects
     num_books = Book.objects.all().count()
     num_listings = Listing.objects.all().count()
-    num_users = User.objects.all().count()
 
     context = {
         'num_books': num_books,
         'num_listings': num_listings,
-        'num_users': num_users
     }
 
 
@@ -72,3 +70,13 @@ def messaging(request):
 
 def search(request):
     return render(request, 'search.html')
+
+class ListingView(generic.ListView):
+    model = Listing 
+    context_object_name = 'listing_view'
+    queryset = Listing.objects.all() 
+    template_name = 'listings_view.html'  # Specify your own template name/location
+
+class ListingDetailView(generic.DetailView):
+    model = Listing
+    template_name = 'listings_detail_view.html'

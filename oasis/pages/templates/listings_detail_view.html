@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Title: {{ object.book.title }}</h1>
+    <p><strong>Posted by: </strong> {{ object.posted_by }}</p>
+    <p><strong>Author:</strong> <a href="">{{ object.book.author }}</a></p> <!-- author detail link not yet defined -->
+    <p><strong>ISBN:</strong> {{ object.book.isbn }}</p>
+    <p><strong>Condition:</strong> {{ object.get_condition_display }}</p>
+    <p><strong>Publishing Year:</strong> {{ object.book.pub_year }} </p>
+    <p><strong>Edition :</strong> {{ object.book.edition }} </p>
+
+    <p><strong>Posted:</strong> {{ object.date_added }}</p>
+    <!-- <div style="margin-left:20px;margin-top:20px"> -->
+        <!-- <h4>Copies</h4> -->
+
+        <!-- {% for copy in object.objectinstance_set.all %}
+        <hr>
+        <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
+            {{ copy.get_status_display }}
+        </p>
+        {% if copy.status != 'a' %}
+            <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>
+        {% endif %}
+        <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
+        <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
+        {% endfor %} -->
+    <!-- </div> -->
+{% endblock %}

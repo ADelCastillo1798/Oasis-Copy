@@ -1,17 +1,18 @@
 from django.db import models
 import uuid # Required for unique listings
 from django.forms import ModelForm
+from django.urls import reverse
 
 
 # Create your models here.
 
-class User(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    password = models.CharField(max_length=100)
+# class User(models.Model):
+#     name = models.CharField(max_length=100)
+#     email = models.EmailField()
+#     password = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.name 
+#     def __str__(self):
+#         return self.name 
 
 
 class Listing(models.Model):
@@ -21,14 +22,14 @@ class Listing(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     
     # not yet sure how users work - may want users not to be a model and instead use django default user handling
-    posted_by = models.ForeignKey('User', on_delete=models.SET_NULL,null=True)
+    # posted_by = models.ForeignKey('User', on_delete=models.SET_NULL,null=True)
 
     CONDITION = (
-        (1, 'New'),
-        (2, 'Like New'),
-        (3, 'Lightly Used'),
-        (4, 'Moderately Used'),
-        (5, 'Heavily Used')
+        ('1', 'New'),
+        ('2', 'Like New'),
+        ('3', 'Lightly Used'),
+        ('4', 'Moderately Used'),
+        ('5', 'Heavily Used')
     )
     condition = models.CharField(
         max_length=1,
@@ -46,7 +47,7 @@ class Listing(models.Model):
     # Methods
     def get_absolute_url(self):
         """Returns the url to access a particular instance of MyModelName."""
-        return reverse('model-detail-view', args=[str(self.id)])
+        return reverse('listings-detail', args=[str(self.id)])
 
     def __str__(self):
         """String for representing the MyModelName object (in Admin site etc.)."""

@@ -9,4 +9,6 @@ urlpatterns = [
     path('landing/', views.landingpage, name = 'landingpage'),
     path('login/', views.login, name = 'login'),
     path('search/', views.search, name = 'search'),
+    path('listings/', views.ListingView.as_view(), name='listings'),
+    path('listings/<str:pk>', views.ListingDetailView.as_view(), name='listings-detail'),
 ]
