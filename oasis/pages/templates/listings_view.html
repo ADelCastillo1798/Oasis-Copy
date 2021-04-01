@@ -1,16 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>All Listings</h1>
+  <!-- <h1>All Listings ({{ object_list|length }})</h1> -->
   {% if object_list %}
-  <ul>
+  <div class="row">
+    {% for object in object_list %}
+    <!-- will need to adjust to create grid with fixed num of columns  -->
+    <div class="col-sm-4">
+      <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
+      
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"> {{ object.book.title }}</h5>
+          <p class="card-text"> {{object.book.author }}</p>
+          <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  <!-- <ul>
     {% for object in object_list %}
       <li>
         <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}}
       </li>
     {% endfor %}
-  </ul>
+  </ul> -->
   {% else %}
-    <p>There are no books in the library.</p>
+    <p>There are no current listings.</p>
   {% endif %} 
 {% endblock %}
