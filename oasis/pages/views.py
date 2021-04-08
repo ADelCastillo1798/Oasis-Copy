@@ -81,8 +81,11 @@ def sellerlisting(request):
             isbn = form.cleaned_data.get('isbn')
             edition = form.cleaned_data.get('edition')
             pub_year = form.cleaned_data.get('pub_year')
+            condition =form.cleaned_data.get('condition')
             new_book = Book(title=title, author=author, isbn=isbn, edition=edition, pub_year=pub_year)
-            new_book.save()             
+            new_book.save() 
+            new_listing = Listing(book=new_book, condition=condition)
+            new_listing.save()            
             return redirect('/')
     else:
         form = ListForm()

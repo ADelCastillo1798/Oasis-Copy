@@ -2,6 +2,8 @@ from django.db import models
 import uuid # Required for unique listings
 from django.forms import ModelForm
 from django.urls import reverse
+from pages.choices import * 
+
 
 
 # Create your models here.
@@ -24,13 +26,7 @@ class Listing(models.Model):
     # not yet sure how users work - may want users not to be a model and instead use django default user handling
     # posted_by = models.ForeignKey('User', on_delete=models.SET_NULL,null=True)
 
-    CONDITION = (
-        ('1', 'New'),
-        ('2', 'Like New'),
-        ('3', 'Lightly Used'),
-        ('4', 'Moderately Used'),
-        ('5', 'Heavily Used')
-    )
+    
     condition = models.CharField(
         max_length=1,
         choices=CONDITION,
