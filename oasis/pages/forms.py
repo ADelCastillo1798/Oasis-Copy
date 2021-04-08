@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from django.contrib.auth.models import User
+from pages.models import Book
 from django.contrib.auth.forms import UserCreationForm
 
 class UserRegistrationForm(UserCreationForm):
@@ -10,14 +11,13 @@ class UserRegistrationForm(UserCreationForm):
         model=User
         fields=['username','email','password1','password2']
 
-
-###old form replaced by above
-class RegistrationForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    email = forms.EmailField(max_length=254)
-
+class ListForm(forms.Form):
+    title = forms.CharField(max_length=200)
+    author = forms.CharField(max_length=100)
+    isbn = forms.CharField(max_length=13)
+    edition = forms.CharField(max_length=5) #length here assumes no more than 999th edition -- seems like a reasonable assumption
+    pub_year = forms.CharField(max_length=5) 
     class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+        model=Book
+        fields=['title', 'author', 'isbn', 'edition', 'pub_year']
 

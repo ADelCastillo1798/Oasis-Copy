@@ -5,8 +5,8 @@ from pages.models import Book, Listing
 from django.views import generic
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .forms import RegistrationForm
 from .forms import UserRegistrationForm
+from .forms import ListForm
 from django.contrib import messages
 
 
@@ -71,3 +71,20 @@ class ListingView(generic.ListView):
 class ListingDetailView(generic.DetailView):
     model = Listing
     template_name = 'listings_detail_view.html'
+
+def sellerlisting(request):
+    if request.method == 'POST':
+        form = ListForm(data=request.POST)
+        if form.is_valid():
+            title = form.cleaned_data.get('title')
+            author = form.cleaned_data.get('author')
+            isbn = form.cleaned_data.get('isbn')
+            edition = form.cleaned_data.get('edition')
+            pub_year = form.cleaned_data.get('pub_year')
+            new_book = Book(title=title, author=author, isbn=isbn, edition=edition, pub_year=pub_year)
+            new_book.save()             
+            return redirect('/')
+    else:
+        form = ListForm()
+    return render(request, 'sellerlisting.html', {'form': form})
+
