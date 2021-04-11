@@ -33,6 +33,7 @@ def clientcreation(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
+            login(request, user)
             return redirect('/')
     else:
         form = UserRegistrationForm()
@@ -85,7 +86,8 @@ def sellerlisting(request):
             new_book = Book(title=title, author=author, isbn=isbn, edition=edition, pub_year=pub_year)
             new_book.save() 
             new_listing = Listing(book=new_book, condition=condition)
-            new_listing.save()            
+            new_listing.user = request.user
+            new_listing.save() 
             return redirect('/')
     else:
         form = ListForm()

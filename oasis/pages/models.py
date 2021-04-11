@@ -3,18 +3,20 @@ import uuid # Required for unique listings
 from django.forms import ModelForm
 from django.urls import reverse
 from pages.choices import * 
+from django.contrib.auth.models import User
+from django.conf import settings
+  
+User = settings.AUTH_USER_MODEL
+
 
 
 
 # Create your models here.
 
-# class User(models.Model):
-#     name = models.CharField(max_length=100)
-#     email = models.EmailField()
-#     password = models.CharField(max_length=100)
-
-#     def __str__(self):
-#         return self.name 
+#class User(models.Model):
+ #   email = models.EmailField(max_length=200)
+ #   def __str__(self):
+ #       return self.name 
 
 
 class Listing(models.Model):
@@ -22,7 +24,11 @@ class Listing(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='unique id for this listing')
     book = models.ForeignKey('Book', on_delete=models.RESTRICT, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    
+    user = models.ForeignKey(User,
+                        default = 1,
+                        null = True, 
+                        on_delete = models.SET_NULL
+                        )    
     # not yet sure how users work - may want users not to be a model and instead use django default user handling
     # posted_by = models.ForeignKey('User', on_delete=models.SET_NULL,null=True)
 

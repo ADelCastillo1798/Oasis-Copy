@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Title: {{ object.book.title }}</h1>
-    <p><strong>Posted by: </strong> {{ object.posted_by }}</p>
+    <p><strong>Posted by: </strong> {{ object.user.username }}</p>
     <p><strong>Author:</strong> <a href="">{{ object.book.author }}</a></p> <!-- author detail link not yet defined -->
     <p><strong>ISBN:</strong> {{ object.book.isbn }}</p>
     <p><strong>Condition:</strong> {{ object.get_condition_display }}</p>

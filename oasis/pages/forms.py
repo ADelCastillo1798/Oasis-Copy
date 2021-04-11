@@ -24,4 +24,5 @@ class ListForm(forms.Form):
     class Meta:
         model=Book
         fields=['title', 'author', 'isbn', 'edition', 'pub_year']
+        
 
