@@ -1,33 +1,51 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <!-- <h1>All Listings ({{ object_list|length }})</h1> -->
-  {% if object_list %}
-  <div class="row">
-    {% for object in object_list %}
-    <!-- will need to adjust to create grid with fixed num of columns  -->
-    <div class="col-sm-4">
-      <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
-      
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"> {{ object.book.title }}</h5>
-          <p class="card-text"> {{object.book.author }}</p>
-          <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+<!-- <h1>All Listings ({{ object_list|length }})</h1> -->
+<div class="row">
+  <div class="col-sm-12 bg-secondary py-2 mx-auto">
+    <form class="form-inline justify-content-center">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Filters
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </div>
-    </div>
-    {% endfor %}
+      <input class="form-control col-sm-8 mx-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
   </div>
-  
-  <!-- <ul>
-    {% for object in object_list %}
-      <li>
-        <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}}
-      </li>
-    {% endfor %}
-  </ul> -->
-  {% else %}
-    <p>There are no current listings.</p>
-  {% endif %} 
+</div>
+{% if object_list %}
+<div class="row">
+  {% for object in object_list %}
+  <!-- will need to adjust to create grid with fixed num of columns  -->
+  <div class="col-sm-4">
+    <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
+    
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"> {{ object.book.title }}</h5>
+        <p class="card-text"> {{object.book.author }}</p>
+        <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- <ul>
+  {% for object in object_list %}
+  <li>
+    <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}}
+  </li>
+  {% endfor %}
+</ul> -->
+{% else %}
+<p>There are no current listings.</p>
+{% endif %} 
 {% endblock %}
