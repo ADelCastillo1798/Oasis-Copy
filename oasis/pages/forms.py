@@ -10,9 +10,12 @@ from django.contrib.auth.forms import UserCreationForm
 
 class UserRegistrationForm(UserCreationForm):
     email=forms.EmailField()
+    FirstName = forms.CharField(label="First Name")
+    LastName = forms.CharField(label="Last Name")
+    phone = forms.IntegerField(label="Phone Number")
     class Meta:
         model=User
-        fields=['username','email','password1','password2']
+        fields=['username','FirstName','LastName','email','phone','password1','password2']
 
 class ListForm(forms.Form):
     title = forms.CharField(max_length=200)
