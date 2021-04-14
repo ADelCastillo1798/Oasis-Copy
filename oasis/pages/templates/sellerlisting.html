@@ -3,7 +3,11 @@
 
 {% block content %}
 
-<form action="" method = "post">
+<div class="text-center">
+    <h1>Create a Listing</h1>
+    <p>Fill in the following fields to list your book</p>
+</div>
+<form action="" method = "post" class ="col-lg-6 col-md-8 col-sm-10 mx-auto">
     {% csrf_token %}
     {{form|crispy }}
     <input type="submit" value="Submit">
