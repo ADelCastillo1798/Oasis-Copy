@@ -29,6 +29,8 @@ class Listing(models.Model):
                         null = True, 
                         on_delete = models.SET_NULL
                         )    
+    price= models.DecimalField(max_digits=10, decimal_places=2)
+
     # not yet sure how users work - may want users not to be a model and instead use django default user handling
     # posted_by = models.ForeignKey('User', on_delete=models.SET_NULL,null=True)
 
@@ -71,3 +73,4 @@ class Book(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this book."""
         return reverse('book-detail', args=[str(self.id)])
+

@@ -92,4 +92,3 @@ def sellerlisting(request):
     else:
         form = ListForm()
     return render(request, 'sellerlisting.html', {'form': form})
-

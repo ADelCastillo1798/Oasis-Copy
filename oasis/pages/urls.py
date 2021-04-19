@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.conf.urls import include
 
 
 urlpatterns = [
@@ -12,5 +13,6 @@ urlpatterns = [
     path('listings/', views.ListingView.as_view(), name='listings'),
     path('listings/<str:pk>', views.ListingDetailView.as_view(), name='listings-detail'),
     path('sellerlisting/', views.sellerlisting, name = 'sellerlisting'),
+
 
 ]
