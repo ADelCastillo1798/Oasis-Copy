@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from pages.models import Listing
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
+from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 
 @login_required(login_url="/pages/login")
 def cartadd(request, id):
@@ -16,8 +20,13 @@ def itemclear(request, id):
     cart = Cart(request)
     product = Listing.objects.get(id=id)
     cart.remove(product)
-    return redirect("cartdetail")
+    return redirect("/")
 
 @login_required(login_url="/pages/login")
 def cartdetail(request):
-    return render(request, 'cart_detail.html')
+    cart = Cart(request)
+    products = []
+    context = { 'cart': cart }
+    context['products'] = products
+    return render(request, 'cart_detail.html', context)
+    #return render(request, 'cart_detail.html')
