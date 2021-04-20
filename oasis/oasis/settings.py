@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pages.apps.PagesConfig',
     'crispy_forms',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ ROOT_URLCONF = 'oasis.urls'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+ASGI_APPLICATION = "oasis.asgi.application"
 
 TEMPLATES = [
     {
@@ -123,3 +125,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

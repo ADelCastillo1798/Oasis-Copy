@@ -71,3 +71,33 @@ class Book(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this book."""
         return reverse('book-detail', args=[str(self.id)])
+
+
+#message thread
+class Conversation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='unique id for this conversation')
+    users = {models.ForeignKey(User,
+                        default = 1,
+                        null = True, 
+                        on_delete = models.SET_NULL
+                        ), 
+            models.ForeignKey(User,
+                        default = 1,
+                        null = True, 
+                        on_delete = models.SET_NULL
+            )}
+
+
+class Message(models.Model):
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    sentby = models.ForeignKey(User,
+                        default = 1,
+                        null = True, 
+                        on_delete = models.SET_NULL
+                        )
+    conversation = models.ForeignKey(Conversation, default = 1, null=True, on_delete = models.SET_NULL)
+    class Meta:
+        ordering = ['-timestamp']
+    
+

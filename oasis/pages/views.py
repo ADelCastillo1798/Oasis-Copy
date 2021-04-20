@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing
+from pages.models import Book, Listing, Conversation, Message
 
 from django.views import generic
 from django.contrib.auth import login, authenticate
@@ -93,3 +93,13 @@ def sellerlisting(request):
         form = ListForm()
     return render(request, 'sellerlisting.html', {'form': form})
 
+def chat(request, conversation_id):
+    # conversation, is_new = Conversation.objects.get_or_create(id=conversation_id)
+    # reversed(conversation.message_set.order_by('-timestamp')[:50])
+
+    return render(request, 'chat.html', {
+        'conversation_id': conversation_id
+        # 'conversation': conversation,     
+        # 'conversation_id': conversation_id,   
+        # 'messages': conversation.message_set,
+    })
