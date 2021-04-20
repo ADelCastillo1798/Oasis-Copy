@@ -103,3 +103,9 @@ def chat(request, conversation_id):
         # 'conversation_id': conversation_id,   
         # 'messages': conversation.message_set,
     })
+
+def messaging(request):
+    current_user = request.user
+    conversations = Conversation.objects.filter(seller=current_user) | Conversation.objects.filter(buyer=current_user) 
+    return render(request, 'messaging.html',{'current_user': current_user, 'conversations':conversations})
+    

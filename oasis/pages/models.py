@@ -76,16 +76,18 @@ class Book(models.Model):
 #message thread
 class Conversation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='unique id for this conversation')
-    users = {models.ForeignKey(User,
+    seller = models.ForeignKey(User,
+                        related_name='seller',
                         default = 1,
                         null = True, 
                         on_delete = models.SET_NULL
-                        ), 
-            models.ForeignKey(User,
-                        default = 1,
+                        )
+    buyer = models.ForeignKey(User,
+                        related_name='buyer',
+                        default = 2,
                         null = True, 
                         on_delete = models.SET_NULL
-            )}
+            )
 
 
 class Message(models.Model):
