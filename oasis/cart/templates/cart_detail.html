@@ -2,42 +2,28 @@
 
 {% block content %}
 <!-- <h1>All Listings ({{ object_list|length }})</h1> -->
-<div id="subheader">
-  <div class="cart">
-    {% with total_items=cart|length %}
-    {% if cart|length > 0 %}
-      Your cart:
-      <a>
-      {{ total_items }} item{{ total_items|pluralize }},
-      ${{ cart.get_total_price }}
-      </a>
-    {% else %}
-      Your cart is empty.
-    {% endif %}
-    {% endwith %}
-  </div>
-</div>
+
   
 {% if cart %}
-<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
   {% for product in cart %}
   <!-- will need to adjust to create grid with fixed num of columns  -->
   <!-- <div class="col-sm-4"> -->
     <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
-    
-    <div class="card col-sm-4 rounded">
-      <div class="card-body">
-        <h5 class="card-title"> {{ product.product.book.title }}</h5>
-        <p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
-        <p class="card-text">{{ product.product.book.edition }} Edition</p>
-        <p class="card-text">${{ product.price}} </p>
-        <p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
-        <a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary">Remove From Cart</a>
+    <div class="col p-md-3">
+      <div class="card rounded" style="width: 100%;">
+        <div class="card-body">
+          <h5 class="card-title"> {{ product.product.book.title }}</h5>
+          <p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
+          <p class="card-text">{{ product.product.book.edition }} Edition</p>
+          <p class="card-text">${{ product.price}} </p>
+          <p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
+          <a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary">Remove From Cart</a>
+        </div>
       </div>
     </div>
+
   <!-- </div> -->
   {% endfor %}
-</div>
 
 <!-- <ul>
   {% for object in object_list %}
@@ -47,6 +33,23 @@
   {% endfor %}
 </ul> -->
 {% else %}
-<p>There are no current listings.</p>
+<p>Your cart is empty.</p>
 {% endif %} 
+
+<div id="header">
+  <div class="cart">
+    {% with total_items=cart|length %}
+    {% if cart|length > 0 %}
+      Your cart:
+      <a>
+      {{ total_items }} item{{ total_items|pluralize }},
+      ${{ cart.get_total_price }}
+      </a>
+    {% else %}
+      
+    {% endif %}
+    {% endwith %}
+  </div>
+</div>
+
 {% endblock %}
