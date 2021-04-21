@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 
 
 
@@ -12,7 +13,7 @@ def cartadd(request, id):
     cart = Cart(request)
     product = Listing.objects.get(id=id)
     cart.add(product=product)
-    return redirect("/")
+    return redirect("/cart/cart-detail/")
 
 
 @login_required(login_url="/pages/login")
@@ -20,7 +21,7 @@ def itemclear(request, id):
     cart = Cart(request)
     product = Listing.objects.get(id=id)
     cart.remove(product)
-    return redirect("/")
+    return redirect('/cart/cart-detail/')
 
 @login_required(login_url="/pages/login")
 def cartdetail(request):
