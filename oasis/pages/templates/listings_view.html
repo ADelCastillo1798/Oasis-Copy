@@ -38,6 +38,7 @@
         <p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
         <p class="card-text">{{ object.book.edition }} Edition</p>
         <p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+        <p class="card-text">Price: ${{ object.price}}</p>
         <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
       </div>
     </div>

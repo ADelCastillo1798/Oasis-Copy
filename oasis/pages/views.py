@@ -87,6 +87,7 @@ def sellerlisting(request):
             edition = form.cleaned_data.get('edition')
             pub_year = form.cleaned_data.get('pub_year')
             condition = form.cleaned_data.get('condition')
+            price = form.cleaned_data.get('price')
             new_book = Book(
                 title=title,
                 author=author,
@@ -94,7 +95,7 @@ def sellerlisting(request):
                 edition=edition,
                 pub_year=pub_year)
             new_book.save()
-            new_listing = Listing(book=new_book, condition=condition)
+            new_listing = Listing(book=new_book, condition=condition, price=price)
             new_listing.user = request.user
             new_listing.save()
             return redirect('/')
