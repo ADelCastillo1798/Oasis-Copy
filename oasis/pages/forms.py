@@ -24,6 +24,7 @@ class ListForm(forms.Form):
     edition = forms.CharField(max_length=5) #length here assumes no more than 999th edition -- seems like a reasonable assumption
     pub_year = forms.CharField(max_length=5) 
     condition = forms.ChoiceField(choices=CONDITION)
+    box = forms.ChoiceField(choices=BOOL, label="Is this a donation?")
     class Meta:
         model=Book
         fields=['title', 'author', 'isbn', 'edition', 'pub_year']

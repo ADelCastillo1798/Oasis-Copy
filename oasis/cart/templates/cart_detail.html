@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- <h1>All Listings ({{ object_list|length }})</h1> -->
+
+  
+{% if cart %}
+  {% for product in cart %}
+  <!-- will need to adjust to create grid with fixed num of columns  -->
+  <!-- <div class="col-sm-4"> -->
+    <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
+    <div class="col p-md-3">
+      <div class="card rounded" style="width: 100%;">
+        <div class="card-body">
+          <h5 class="card-title"> {{ product.product.book.title }}</h5>
+          <p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
+          <p class="card-text">{{ product.product.book.edition }} Edition</p>
+          <p class="card-text">${{ product.price}} </p>
+          <p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
+          <a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary">Remove From Cart</a>
+        </div>
+      </div>
+    </div>
+
+  <!-- </div> -->
+  {% endfor %}
+
+<!-- <ul>
+  {% for object in object_list %}
+  <li>
+    <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}}
+  </li>
+  {% endfor %}
+</ul> -->
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %} 
+
+<div id="header">
+  <div class="cart">
+    {% with total_items=cart|length %}
+    {% if cart|length > 0 %}
+      Your cart:
+      <a>
+      {{ total_items }} item{{ total_items|pluralize }},
+      ${{ cart.get_total_price }}
+      </a>
+    {% else %}
+      
+    {% endif %}
+    {% endwith %}
+  </div>
+</div>
+
+{% endblock %}

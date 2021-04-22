@@ -128,3 +128,7 @@ def messaging(request):
         'current_user': current_user,
         'conversations': conversations
     })
+
+
+def profile(request):
+    return render(request, 'profile.html')

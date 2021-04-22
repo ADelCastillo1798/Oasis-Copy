@@ -5,3 +5,8 @@ CONDITION = (
         ('4', 'Moderately Used'),
         ('5', 'Heavily Used')
     )
+
+BOOL = (
+        ('1', 'No'),
+        ('2', 'Yes')
+    )

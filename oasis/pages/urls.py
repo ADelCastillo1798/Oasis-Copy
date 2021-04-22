@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.conf.urls import include
 
 urlpatterns = [
     path('', views.home, name='index'),
@@ -9,13 +10,14 @@ urlpatterns = [
     path('login/', views.loginview, name='login'),
     path('search/', views.search, name='search'),
     path('listings/', views.ListingView.as_view(), name='listings'),
+    # path('chat/', views.chat, name='chat'),
+    # path('messaging/<str:conversation_id>/', views.chat, name='chat2'),
+    path('chat/<str:conversation_id>/', views.chat, name='chat'),
+    path('messaging', views.messaging, name='messaging'),
     path(
         'listings/<str:pk>',
         views.ListingDetailView.as_view(),
         name='listings-detail'),
     path('sellerlisting/', views.sellerlisting, name='sellerlisting'),
-    # path('chat/', views.chat, name='chat'),
-    # path('messaging/<str:conversation_id>/', views.chat, name='chat2'),
-    path('chat/<str:conversation_id>/', views.chat, name='chat'),
-    path('messaging', views.messaging, name='messaging'),
+    path('profile/', views.profile, name='profile'),
 ]

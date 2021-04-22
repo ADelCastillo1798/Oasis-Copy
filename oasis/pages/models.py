@@ -2,10 +2,10 @@ from django.db import models
 import uuid # Required for unique listings
 from django.forms import ModelForm
 from django.urls import reverse
-from pages.choices import * 
+from pages.choices import *
 from django.contrib.auth.models import User
 from django.conf import settings
-  
+
 User = settings.AUTH_USER_MODEL
 
 
@@ -16,7 +16,7 @@ User = settings.AUTH_USER_MODEL
 #class User(models.Model):
  #   email = models.EmailField(max_length=200)
  #   def __str__(self):
- #       return self.name 
+ #       return self.name
 
 
 class Listing(models.Model):
@@ -26,13 +26,15 @@ class Listing(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User,
                         default = 1,
-                        null = True, 
+                        null = True,
                         on_delete = models.SET_NULL
-                        )    
+                        )
+    price= models.DecimalField(max_digits=10, decimal_places=2)
+
     # not yet sure how users work - may want users not to be a model and instead use django default user handling
     # posted_by = models.ForeignKey('User', on_delete=models.SET_NULL,null=True)
 
-    
+
     condition = models.CharField(
         max_length=1,
         choices=CONDITION,
@@ -40,8 +42,8 @@ class Listing(models.Model):
         default=1,
         help_text='Book condition',
     )
-    # not yet sure yet how to handle images 
-    # image = 
+    # not yet sure yet how to handle images
+    # image =
 
     class Meta:
         ordering = ['-date_added']
@@ -62,12 +64,12 @@ class Book(models.Model):
     #author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
     isbn = models.CharField('ISBN', max_length=13, unique=True, help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
     edition = models.CharField(max_length=5) #length here assumes no more than 999th edition -- seems like a reasonable assumption
-    pub_year = models.SmallIntegerField() 
+    pub_year = models.SmallIntegerField()
 
     def __str__(self):
         """String for representing the Model object."""
         return self.title
-    
+
     def get_absolute_url(self):
         """Returns the url to access a detail record for this book."""
         return reverse('book-detail', args=[str(self.id)])
@@ -79,13 +81,13 @@ class Conversation(models.Model):
     seller = models.ForeignKey(User,
                         related_name='seller',
                         default = 1,
-                        null = True, 
+                        null = True,
                         on_delete = models.SET_NULL
                         )
     buyer = models.ForeignKey(User,
                         related_name='buyer',
                         default = 2,
-                        null = True, 
+                        null = True,
                         on_delete = models.SET_NULL
             )
 
@@ -95,11 +97,9 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     sentby = models.ForeignKey(User,
                         default = 1,
-                        null = True, 
+                        null = True,
                         on_delete = models.SET_NULL
                         )
     conversation = models.ForeignKey(Conversation, default = 1, null=True, on_delete = models.SET_NULL)
     class Meta:
         ordering = ['-timestamp']
-    
-
