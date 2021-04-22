@@ -1,14 +1,87 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{request.user.username}}
+<!-- {{request.user.username}}
 
-<p>Conversations from context: {{ conversations }}</p>
+<p>Conversations from context: {{ conversations }}</p> -->
+<div class="row">
+
+<div class="col-sm">
 <div class="btn-group-vertical">
 {% for conversation in conversations %}
-    <button type="button" class="btn btn-outline-primary">{{ conversation.buyer.first_name }} {{conversation.buyer.last_name}}</button>
+    <button type="button" class="btn btn-outline-primary" onclick="buttonClick(this,'{{conversation.id}}')" >
+      {{ conversation.buyer.first_name }} {{conversation.buyer.last_name}}
+    </button>
     <!-- <p>{{conversation.buyer}}</p>
     <p>{{ conversation.buyer.first_name }} {{conversation.buyer.last_name}}</p> -->
 {% endfor %}
 </div>
+</div>
+<div class="col-lg" id="current-conversation">
+  <subheading>
+    Messages
+  </subheading>
+  <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+  <input id="chat-message-input" type="text" size="100"><br>
+  <input id="chat-message-submit" type="button" value="Send">
+</div>
+</div>
+
+<script type="text/javascript">
+  let sessionKey = '{{ request.session.session_key }}';
+  let currentUser = '{{ request.user.username }}';
+  var chatSocket;
+  function buttonClick(element,conversation_id){
+
+    //if a current message is open
+    if (chatSocket){
+      //close it (to prevent messages being sent to the wrong person)
+      chatSocket.close();
+      //wipe old messages from screen
+      document.querySelector('#chat-log').value = '';
+    }
+    //print current websocket just for debugging
+    console.log(chatSocket);
+
+    document.getElementById("current-conversation");
+
+    //open a new websocket for this conversation
+    chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/messaging/'
+        // + sessionKey
+        // + "/"
+        + conversation_id.replace(/-/g,"") //new chat session for every conversation
+        + '/'
+    );
+    console.log(chatSocket);
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        document.querySelector('#chat-log').value += (data.message + '\n');
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'conversation_id': conversation_id
+        }));
+        messageInputDom.value = '';
+    };
+  }
+</script>
 {% endblock %}

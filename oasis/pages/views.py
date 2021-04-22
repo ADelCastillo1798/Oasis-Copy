@@ -9,9 +9,8 @@ from .forms import UserRegistrationForm
 from .forms import ListForm
 from django.contrib import messages
 
-
-
 # Create your views here.
+
 
 def home(request):
 
@@ -24,8 +23,8 @@ def home(request):
         'num_listings': num_listings,
     }
 
-
     return render(request, 'index.html', context=context)
+
 
 def clientcreation(request):
     if request.method == 'POST':
@@ -39,6 +38,7 @@ def clientcreation(request):
         form = UserRegistrationForm()
     return render(request, 'clientcreation.html', {'form': form})
 
+
 def loginview(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -51,7 +51,7 @@ def loginview(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
-   
+
 
 def landingpage(request):
     return render(request, 'LandingPage.html')
@@ -60,18 +60,22 @@ def landingpage(request):
 def messaging(request):
     return render(request, 'messaging.html')
 
+
 def search(request):
     return render(request, 'search.html')
 
+
 class ListingView(generic.ListView):
-    model = Listing 
+    model = Listing
     context_object_name = 'listing_view'
-    queryset = Listing.objects.all() 
+    queryset = Listing.objects.all()
     template_name = 'listings_view.html'  # Specify your own template name/location
+
 
 class ListingDetailView(generic.DetailView):
     model = Listing
     template_name = 'listings_detail_view.html'
+
 
 def sellerlisting(request):
     if request.method == 'POST':
@@ -82,30 +86,45 @@ def sellerlisting(request):
             isbn = form.cleaned_data.get('isbn')
             edition = form.cleaned_data.get('edition')
             pub_year = form.cleaned_data.get('pub_year')
-            condition =form.cleaned_data.get('condition')
-            new_book = Book(title=title, author=author, isbn=isbn, edition=edition, pub_year=pub_year)
-            new_book.save() 
+            condition = form.cleaned_data.get('condition')
+            new_book = Book(
+                title=title,
+                author=author,
+                isbn=isbn,
+                edition=edition,
+                pub_year=pub_year)
+            new_book.save()
             new_listing = Listing(book=new_book, condition=condition)
             new_listing.user = request.user
-            new_listing.save() 
+            new_listing.save()
             return redirect('/')
     else:
         form = ListForm()
     return render(request, 'sellerlisting.html', {'form': form})
 
+
 def chat(request, conversation_id):
     # conversation, is_new = Conversation.objects.get_or_create(id=conversation_id)
     # reversed(conversation.message_set.order_by('-timestamp')[:50])
 
-    return render(request, 'chat.html', {
-        'conversation_id': conversation_id
-        # 'conversation': conversation,     
-        # 'conversation_id': conversation_id,   
-        # 'messages': conversation.message_set,
-    })
+    return render(
+        request,
+        'chat.html',
+        {
+            'conversation_id': conversation_id
+            # 'conversation': conversation,
+            # 'conversation_id': conversation_id,
+            # 'messages': conversation.message_set,
+        })
+
 
 def messaging(request):
+    #get current user
     current_user = request.user
-    conversations = Conversation.objects.filter(seller=current_user) | Conversation.objects.filter(buyer=current_user) 
-    return render(request, 'messaging.html',{'current_user': current_user, 'conversations':conversations})
-    
+    #get all conversations involving the current user
+    conversations = Conversation.objects.filter(
+        seller=current_user) | Conversation.objects.filter(buyer=current_user)
+    return render(request, 'messaging.html', {
+        'current_user': current_user,
+        'conversations': conversations
+    })
