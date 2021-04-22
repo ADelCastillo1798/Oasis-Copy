@@ -92,3 +92,6 @@ def sellerlisting(request):
     else:
         form = ListForm()
     return render(request, 'sellerlisting.html', {'form': form})
+
+def profile(request):
+    return render(request, 'profile.html')
