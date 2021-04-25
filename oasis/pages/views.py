@@ -10,6 +10,8 @@ from .forms import ListForm
 from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 from django.core import serializers
+from django.db.models import Q
+
 
 import json 
 
@@ -71,6 +73,17 @@ class ListingView(generic.ListView):
     context_object_name = 'listing_view'
     queryset = Listing.objects.all()
     template_name = 'listings_view.html'  # Specify your own template name/location
+
+    def get_queryset(self, *args, **kwargs):
+        val = self.request.GET.get("q")
+        if val:
+            queryset = Listing.objects.filter(
+                Q(book__title__icontains=val) |
+                Q(book__author__icontains=val)
+                ).distinct()
+        else:
+            queryset = Listing.objects.all()
+        return queryset
 
 
 class ListingDetailView(generic.DetailView):
@@ -143,3 +156,6 @@ def messaging(request):
 
 def profile(request):
     return render(request, 'profile.html')
+
+
+
