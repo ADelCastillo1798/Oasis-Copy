@@ -7,10 +7,11 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .forms import UserRegistrationForm
 from .forms import ListForm
-from django.contrib import messages
-
+from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
+from django.core import serializers
 
+import json 
 
 def home(request):
 
@@ -125,9 +126,18 @@ def messaging(request):
     #get all conversations involving the current user
     conversations = Conversation.objects.filter(
         seller=current_user) | Conversation.objects.filter(buyer=current_user)
+    #get all messages for each conversation
+    #this way seems inefficient and there's probably a way to only load messages on demand with javascript BUT i have not found it
+    message_list = []
+    for conversation in conversations:
+        # print(conversation.message_set.all().values())
+        message_list.append([conversation.id,list(conversation.message_set.values())])
+    messages = json.dumps(message_list, cls=DjangoJSONEncoder)
+    
     return render(request, 'messaging.html', {
         'current_user': current_user,
-        'conversations': conversations
+        'conversations': conversations,
+        'messages': messages
     })
 
 
