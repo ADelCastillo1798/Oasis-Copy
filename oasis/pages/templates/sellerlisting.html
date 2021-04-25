@@ -8,9 +8,12 @@
     <p>Fill in the following fields to list your book</p>
 </div>
 <form action="" method = "post" class ="col-lg-6 col-md-8 col-sm-10 mx-auto">
-    {% csrf_token %}
-    {{form|crispy }}
-    <input type="submit" value="Submit">
+        {% csrf_token %}
+        {{form|crispy }}
+    <!--     <input type="submit" value="Submit"> -->
+    <div class="text-center"> 
+        <button type="submit" class="btn btn-primary " >Submit</button>
+    </div>
 </form>
 
 {% endblock %}
