@@ -6,6 +6,54 @@ Welcome {{user.username}}
 <br/>
 <br/>
 <strong>My books:</strong>
+<br/>
+<br/>
+<strong>Suggestions:</strong>
+{% if object_list %}
+<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
+  {% for object in object_list %}
+    <div class="card col-sm-4 rounded">
+      <div class="card-body">
+        <h5 class="card-title"> {{ object.book.title }}</h5>
+        <p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
+        <p class="card-text">{{ object.book.edition }} Edition</p>
+        <p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+        <p class="card-text">Price: ${{ object.price}}</p>
+        <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% else %}
+<p>You have no suggestions at the moment. Check back later for more.</p>
+{% endif %}
+
+<strong>Buyer Rating:</strong>
+<br/>
+<br/>
+<strong>Seller Rating:</strong>
+<br/>
+<br/>
+{% if cart %}
+<Strong>Your Cart:</Strong>
+  {% for product in cart %}
+    <div class="col p-md-3">
+      <div class="card rounded" style="width: 100%;">
+        <div class="card-body">
+          <h5 class="card-title"> {{ product.product.book.title }}</h5>
+          <p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
+          <p class="card-text">{{ product.product.book.edition }} Edition</p>
+          <p class="card-text">${{ product.price}} </p>
+          <p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
+          <a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary">Remove From Cart</a>
+        </div>
+      </div>
+    </div>
+
+  {% endfor %}
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %} 
 
 <!--Listing of books sold by the individual-->
 
