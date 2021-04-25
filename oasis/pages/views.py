@@ -33,7 +33,7 @@ def clientcreation(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            login(request, user)
+            login(request, username)
             return redirect('/')
     else:
         form = UserRegistrationForm()
