@@ -10,7 +10,8 @@ from .forms import ListForm
 from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 from django.core import serializers
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 import json 
 
 def home(request):
@@ -119,7 +120,7 @@ def chat(request, conversation_id):
             # 'messages': conversation.message_set,
         })
 
-
+@login_required(login_url="/pages/login")
 def messaging(request):
     #get current user
     current_user = request.user
@@ -140,6 +141,11 @@ def messaging(request):
         'messages': messages
     })
 
+@login_required(login_url="/pages/login")
+def newconversation(request, id):
+    posted_by = Listing.objects.get(id=id).user
+    conversation, is_new = Conversation.objects.get_or_create(id=id, seller = posted_by, buyer=request.user)
+    return redirect("/pages/messaging")
 
 def profile(request):
     return render(request, 'profile.html')

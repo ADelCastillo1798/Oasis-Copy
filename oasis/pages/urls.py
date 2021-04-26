@@ -20,4 +20,6 @@ urlpatterns = [
         name='listings-detail'),
     path('sellerlisting/', views.sellerlisting, name='sellerlisting'),
     path('profile/', views.profile, name='profile'),
+    path('newconversation/<uuid:id>/', views.newconversation, name='newconversation'),
 ]
+ 
