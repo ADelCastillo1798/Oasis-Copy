@@ -2,4 +2,4 @@ __pycache__/
 oasis/oasis/__pycache__/
 oasis/pages/__pycache__/
 oasis/pages/migrations/__pycache__/
-oasis/dbsqlite3
+oasis/db.sqlite3
