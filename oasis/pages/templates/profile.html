@@ -13,10 +13,9 @@
 	<br/>
 
 	<strong>Suggestions:</strong>
-	{% if listings %}
+	{% if left %}
 		<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-		  {% for object in listings %}
-			{% if object.book.title != "Computer Systems" %}
+		  {% for object in left %}
 			 <!-- Need to make remove based on what is in the cart -->
 			<div class="card col-sm-4 rounded">
 			  <div class="card-body">
@@ -28,7 +27,6 @@
 				<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
 			  </div>
 			</div>
-			{% endif %}
 		  {% endfor %}
 		</div>
 	{% else %}
@@ -74,13 +72,5 @@
 	<meta http-equiv="refresh" content="time; URL=../login" />
 
 {% endif %}
-
-
-
-
-
-
-
-
 
 {%endblock%}

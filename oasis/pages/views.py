@@ -169,21 +169,18 @@ def profile(request):
     listings = Listing.objects.all()
     cart = Cart(request)
     cart_item = []
-    item = []
+    item = Listing.objects.all()
     for i in cart:
-        cart_item += i
-    # left = listings.filter(id__in = cart_item)
-    # for j in listings:
-        # if(j not in cart_item):
-            # item += j
+        cart_item.append(i['product'].id)
+    for j in cart_item:
+        item = item.exclude(id = j)
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
 		'num_users':User.objects.all().count(),
 		'listings':listings,
 		'cart':cart,
-		# 'left':listings.difference(cart_item),
-		'left':item
+		'left':item,
     }
     return render(request, 'profile.html', context=vars)
 
