@@ -136,6 +136,17 @@
       loadMessage(msg);
     }
   }
+  
+  //Robby
+  function sendReminder(conversation_id){
+	let current_conversation = msgs.filter(item => item[0] == conversation_id);
+	current_conversation.sort(item => item[1]);
+	len = current_conversation.length
+	if(current_conversation[len-1]+1.5<date()){
+		sys_msg = "It has been over 36 hours since your last message. If you have completed this transaction please mark the transaction as finished and rate the other party. Thank you for continuing to use the Oasis."
+	}
+  }
+  //Robby
 
   function buttonClick(element,conversation_id){
     //if a current message is open

@@ -1,19 +1,21 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message
+from pages.models import Book, Listing, Conversation, Message, User
 
 from django.views import generic
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .forms import ListForm
 from django.core.serializers.json import DjangoJSONEncoder
-# Create your views here.
 from django.core import serializers
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-
-
 import json 
+
+
 
 def home(request):
 
@@ -48,8 +50,8 @@ def loginview(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            login(request, user)
+            user_ = authenticate(username=username, password=password)
+            login(request, user_)
             return redirect('/')
     else:
         form = AuthenticationForm()
@@ -132,7 +134,7 @@ def chat(request, conversation_id):
             # 'messages': conversation.message_set,
         })
 
-
+@login_required(login_url="/pages/login")
 def messaging(request):
     #get current user
     current_user = request.user
@@ -153,9 +155,22 @@ def messaging(request):
         'messages': messages
     })
 
+@login_required(login_url="/pages/login")
+def newconversation(request, id):
+    posted_by = Listing.objects.get(id=id).user
+    conversation, is_new = Conversation.objects.get_or_create(id=id, seller = posted_by, buyer=request.user)
+    return redirect("/pages/messaging")
 
 def profile(request):
-    return render(request, 'profile.html')
+    num_books = Book.objects.all().count()
+    num_listings = Listing.objects.all().count()
+    vars = {
+        'num_books':num_books,
+		'num_listings':num_listings,
+		'num_users':User.objects.all().count(),
+		'listings':Listing.objects.all(),
+    }
+    return render(request, 'profile.html', context=vars)
 
 
 
