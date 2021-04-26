@@ -8,24 +8,28 @@ Welcome {{user.username}}
 <strong>My books:</strong>
 <br/>
 <br/>
+
 <strong>Suggestions:</strong>
-{% if object_list %}
-<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-  {% for object in object_list %}
-    <div class="card col-sm-4 rounded">
-      <div class="card-body">
-        <h5 class="card-title"> {{ object.book.title }}</h5>
-        <p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
-        <p class="card-text">{{ object.book.edition }} Edition</p>
-        <p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
-        <p class="card-text">Price: ${{ object.price}}</p>
-        <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
-      </div>
-    </div>
-  {% endfor %}
-</div>
+{% if listings %}
+	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
+	  {% for object in listings %}
+        {% if object.book.title != "Computer Systems" %}
+         <!-- Need to make remove based on what is in the cart -->
+		<div class="card col-sm-4 rounded">
+		  <div class="card-body">
+			<h5 class="card-title"> {{ object.book.title }}</h5>
+			<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
+			<p class="card-text">{{ object.book.edition }} Edition</p>
+			<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+			<p class="card-text">Price: ${{ object.price}}</p>
+			<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+		  </div>
+		</div>
+        {% endif %}
+	  {% endfor %}
+	</div>
 {% else %}
-<p>You have no suggestions at the moment. Check back later for more.</p>
+	<p>You have no suggestions at the moment. Check back later for more.</p>
 {% endif %}
 
 <strong>Buyer Rating:</strong>
@@ -56,5 +60,23 @@ Welcome {{user.username}}
 {% endif %} 
 
 <!--Listing of books sold by the individual-->
+
+<strong>ADMIN!</strong>
+<br/>
+Welcome admin {{user.username}}!
+<br/>
+There have been {{ num_books }} books put up for sale.
+<br/>
+{{num_listings}} of those are still for sale.
+<br/>
+There are {{num_users}} users registered.
+
+
+
+
+
+
+
+
 
 {%endblock%}

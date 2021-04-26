@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message
+from pages.models import Book, Listing, Conversation, Message, User
 
 from django.views import generic
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .forms import ListForm
 from django.core.serializers.json import DjangoJSONEncoder
@@ -48,8 +49,8 @@ def loginview(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            login(request, user)
+            user_ = authenticate(username=username, password=password)
+            login(request, user_)
             return redirect('/')
     else:
         form = AuthenticationForm()
@@ -155,7 +156,15 @@ def messaging(request):
 
 
 def profile(request):
-    return render(request, 'profile.html')
+    num_books = Book.objects.all().count()
+    num_listings = Listing.objects.all().count()
+    vars = {
+        'num_books':num_books,
+		'num_listings':num_listings,
+		'num_users':User.objects.all().count(),
+		'listings':Listing.objects.all(),
+    }
+    return render(request, 'profile.html', context=vars)
 
 
 
