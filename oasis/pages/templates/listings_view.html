@@ -30,13 +30,14 @@
 
 
 {% if object_list %}
-<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-  {% for object in object_list %}
+<div class="col-12">
+  <div class="row d-flex flex-wrap mx-auto">
+    {% for object in object_list %}
   <!-- will need to adjust to create grid with fixed num of columns  -->
   <!-- <div class="col-sm-4"> -->
     <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
     
-    <div class="card col-sm-4 rounded">
+    <div class="card rounded m-2" style="width: 25rem;">
       <div class="card-body">
         <h5 class="card-title"> {{ object.book.title }}</h5>
         <p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
@@ -45,10 +46,11 @@
         <p class="card-text">Price: ${{ object.price}}</p>
         <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
       </div>
-      </div>
-      {% endfor %}
+    </div>
+    {% endfor %}
     <!-- </div> -->
   </div>
+</div>
   <!-- <ul>
     {% for object in object_list %}
     <li>
