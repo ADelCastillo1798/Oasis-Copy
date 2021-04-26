@@ -1,18 +1,21 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message
+from pages.models import Book, Listing, Conversation, Message, User
 
 from django.views import generic
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .forms import ListForm
 from django.core.serializers.json import DjangoJSONEncoder
-# Create your views here.
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 import json 
+
+
 
 def home(request):
 
@@ -34,7 +37,7 @@ def clientcreation(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            login(request, user)
+            login(request, username)
             return redirect('/')
     else:
         form = UserRegistrationForm()
@@ -47,8 +50,8 @@ def loginview(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            login(request, user)
+            user_ = authenticate(username=username, password=password)
+            login(request, user_)
             return redirect('/')
     else:
         form = AuthenticationForm()
@@ -72,6 +75,17 @@ class ListingView(generic.ListView):
     context_object_name = 'listing_view'
     queryset = Listing.objects.all()
     template_name = 'listings_view.html'  # Specify your own template name/location
+
+    def get_queryset(self, *args, **kwargs):
+        val = self.request.GET.get("q")
+        if val:
+            queryset = Listing.objects.filter(
+                Q(book__title__icontains=val) |
+                Q(book__author__icontains=val)
+                ).distinct()
+        else:
+            queryset = Listing.objects.all()
+        return queryset
 
 
 class ListingDetailView(generic.DetailView):
@@ -148,4 +162,15 @@ def newconversation(request, id):
     return redirect("/pages/messaging")
 
 def profile(request):
-    return render(request, 'profile.html')
+    num_books = Book.objects.all().count()
+    num_listings = Listing.objects.all().count()
+    vars = {
+        'num_books':num_books,
+		'num_listings':num_listings,
+		'num_users':User.objects.all().count(),
+		'listings':Listing.objects.all(),
+    }
+    return render(request, 'profile.html', context=vars)
+
+
+

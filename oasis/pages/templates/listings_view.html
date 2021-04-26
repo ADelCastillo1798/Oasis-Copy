@@ -20,11 +20,15 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </div>
-      <input class="form-control col-lg-8 mx-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-primary " type="submit">Search</button>
+      <form name="search" method="GET" action="{% url 'listings' %}"> 
+        <input type="text" name="q" placeholder="Search"/>
+        <button class="btn btn-primary " type="submit">Search</button>
+      </form> 
     </form>
   </div>
 </div>
+
+
 {% if object_list %}
 <div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
   {% for object in object_list %}
@@ -41,19 +45,18 @@
         <p class="card-text">Price: ${{ object.price}}</p>
         <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
       </div>
+      <!-- </div> -->
+      {% endfor %}
     </div>
-  <!-- </div> -->
-  {% endfor %}
-</div>
-
-<!-- <ul>
-  {% for object in object_list %}
-  <li>
-    <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}}
-  </li>
-  {% endfor %}
-</ul> -->
-{% else %}
-<p>There are no current listings.</p>
-{% endif %} 
-{% endblock %}
+  </div>
+  <!-- <ul>
+    {% for object in object_list %}
+    <li>
+      <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}}
+    </li>
+    {% endfor %}
+  </ul> -->
+  {% else %}
+  <p>There are no current listings.</p>
+  {% endif %} 
+  {% endblock %}
