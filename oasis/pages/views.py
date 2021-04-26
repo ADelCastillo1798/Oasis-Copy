@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 import json 
+from cart.cart import Cart
 
 
 
@@ -165,13 +166,35 @@ def newconversation(request, id):
 def profile(request):
     num_books = Book.objects.all().count()
     num_listings = Listing.objects.all().count()
+    listings = Listing.objects.all()
+    cart = Cart(request)
+    cart_item = []
+    item = []
+    for i in cart:
+        cart_item += i
+    # left = listings.filter(id__in = cart_item)
+    # for j in listings:
+        # if(j not in cart_item):
+            # item += j
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
 		'num_users':User.objects.all().count(),
-		'listings':Listing.objects.all(),
+		'listings':listings,
+		'cart':cart,
+		# 'left':listings.difference(cart_item),
+		'left':item
     }
     return render(request, 'profile.html', context=vars)
 
+def admin(request):
+    num_books = Book.objects.all().count()
+    num_listings = Listing.objects.all().count()
+    vars = {
+        'num_books':num_books,
+		'num_listings':num_listings,
+		'num_users':User.objects.all().count(),
+    }
+    return render(request, 'admin_view.html', context=vars)
 
 
