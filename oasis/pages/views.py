@@ -81,7 +81,8 @@ class ListingView(generic.ListView):
         if val:
             queryset = Listing.objects.filter(
                 Q(book__title__icontains=val) |
-                Q(book__author__icontains=val)
+                Q(book__author__icontains=val) |
+                Q(book__isbn__icontains=val)
                 ).distinct()
         else:
             queryset = Listing.objects.all()
