@@ -1,16 +1,20 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message
+from pages.models import Book, Listing, Conversation, Message, User
 
 from django.views import generic
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .forms import ListForm
-from django.contrib import messages
-
+from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
+from django.core import serializers
+from django.db.models import Q
 
+
+import json 
 
 def home(request):
 
@@ -32,7 +36,7 @@ def clientcreation(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            login(request, user)
+            login(request, username)
             return redirect('/')
     else:
         form = UserRegistrationForm()
@@ -45,8 +49,8 @@ def loginview(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            login(request, user)
+            user_ = authenticate(username=username, password=password)
+            login(request, user_)
             return redirect('/')
     else:
         form = AuthenticationForm()
@@ -70,6 +74,17 @@ class ListingView(generic.ListView):
     context_object_name = 'listing_view'
     queryset = Listing.objects.all()
     template_name = 'listings_view.html'  # Specify your own template name/location
+
+    def get_queryset(self, *args, **kwargs):
+        val = self.request.GET.get("q")
+        if val:
+            queryset = Listing.objects.filter(
+                Q(book__title__icontains=val) |
+                Q(book__author__icontains=val)
+                ).distinct()
+        else:
+            queryset = Listing.objects.all()
+        return queryset
 
 
 class ListingDetailView(generic.DetailView):
@@ -125,11 +140,31 @@ def messaging(request):
     #get all conversations involving the current user
     conversations = Conversation.objects.filter(
         seller=current_user) | Conversation.objects.filter(buyer=current_user)
+    #get all messages for each conversation
+    #this way seems inefficient and there's probably a way to only load messages on demand with javascript BUT i have not found it
+    message_list = []
+    for conversation in conversations:
+        # print(conversation.message_set.all().values())
+        message_list.append([conversation.id,list(conversation.message_set.values())])
+    messages = json.dumps(message_list, cls=DjangoJSONEncoder)
+    
     return render(request, 'messaging.html', {
         'current_user': current_user,
-        'conversations': conversations
+        'conversations': conversations,
+        'messages': messages
     })
 
 
 def profile(request):
-    return render(request, 'profile.html')
+    num_books = Book.objects.all().count()
+    num_listings = Listing.objects.all().count()
+    vars = {
+        'num_books':num_books,
+		'num_listings':num_listings,
+		'num_users':User.objects.all().count(),
+		'listings':Listing.objects.all(),
+    }
+    return render(request, 'profile.html', context=vars)
+
+
+
