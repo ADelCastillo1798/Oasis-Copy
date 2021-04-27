@@ -13,7 +13,8 @@
     <p><strong>Posted:</strong> {{ object.date_added }}</p>
 
     <a href="{% url 'cart:cartadd' object.id%}" class="btn btn-primary">Add To Cart</a>
-    <a href="{% url 'report' object.id %}" class="btn btn-primary">Report User</a>
+    <a href="{% url 'report' object.id %}" class="btn btn-primary">Report Listing</a>
+    <i class="excalamation-octagon" style="color: red;"></i>
 
 
     <!-- <div style="margin-left:20px;margin-top:20px"> -->
