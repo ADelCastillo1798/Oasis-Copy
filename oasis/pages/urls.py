@@ -22,5 +22,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('newconversation/<uuid:id>/', views.newconversation, name='newconversation'),
     path('admin/', views.admin, name='admin'),
+    path('report/<uuid:oid>/', views.report, name='report'),
+
 ]
  

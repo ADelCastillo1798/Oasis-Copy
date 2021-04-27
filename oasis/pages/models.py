@@ -103,3 +103,18 @@ class Message(models.Model):
     conversation = models.ForeignKey(Conversation, default = 1, null=True, on_delete = models.SET_NULL)
     class Meta:
         ordering = ['-timestamp']
+
+class Report(models.Model):
+    sent_by = models.ForeignKey(User, default = 1,
+                        null = True,
+                        on_delete = models.SET_NULL)
+    reported_listing = models.ForeignKey(Listing, default = 1,
+                        null = True,
+                        on_delete = models.SET_NULL)
+    date_reported = models.DateTimeField(auto_now_add=True)
+
+
+
+
+
+
