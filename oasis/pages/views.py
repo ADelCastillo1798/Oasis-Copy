@@ -193,6 +193,7 @@ def admin(request):
         'num_books':num_books,
 		'num_listings':num_listings,
 		'num_users':User.objects.all().count(),
+		'report':Report.objects.all()
     }
     return render(request, 'admin_view.html', context=vars)
 

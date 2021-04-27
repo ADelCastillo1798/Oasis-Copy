@@ -13,6 +13,7 @@
     <p><strong>Posted:</strong> {{ object.date_added }}</p>
 
     <a href="{% url 'cart:cartadd' object.id%}" class="btn btn-primary">Add To Cart</a>
+
     <a href="{% url 'report' object.id %}" class="btn btn-primary">Report User</a>
 
 
