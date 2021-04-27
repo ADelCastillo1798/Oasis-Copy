@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{%block content%}
+
+{% if user.username in "reinersr" %}
+	<strong>ADMIN</strong>
+	<br/>
+	Welcome admin {{user.username}}!
+	<br/>
+	<br/>
+	There have been {{ num_books }} books put up for sale.
+	<br/>
+	{{num_listings}} of those are still for sale.
+	<br/>
+	There are {{num_users}} users registered.
+	<br/>
+	<br/>
+	User Reports
+	<br/>
+	Users with low ratings
+	<br/>
+	
+	<br/>
+	<br/>
+	
+{% else %}
+	<br/>
+	<br/>
+	<strong>You are not an admin</strong>
+	<br/>
+	<br/>
+	<a class="btn btn-primary" href="{% url 'index' %}">Return Home</a>
+{% endif %}
+
+
+
+
+
+{%endblock%}

@@ -1,88 +1,76 @@
 {% extends 'base.html' %}
 
 {%block content%}
-<br/>
-Welcome {{user.username}}
-<br/>
-<br/>
-<strong>My books:</strong>
-<br/>
-<br/>
 
-<strong>Suggestions:</strong>
-{% if listings %}
-	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-	  {% for object in listings %}
-        {% if object.book.title != "Computer Systems" %}
-         <!-- Need to make remove based on what is in the cart -->
-		<div class="card col-sm-4 rounded">
-		  <div class="card-body">
-			<h5 class="card-title"> {{ object.book.title }}</h5>
-			<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
-			<p class="card-text">{{ object.book.edition }} Edition</p>
-			<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
-			<p class="card-text">Price: ${{ object.price}}</p>
-			<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+{% if user.is_authenticated %}
+
+	<br/>
+	Welcome {{user.username}}
+	<br/>
+	<br/>
+	<strong>My books:</strong>
+	<br/>
+	<br/>
+
+	<strong>Suggestions:</strong>
+	{% if left %}
+		<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
+		  {% for object in left %}
+			 <!-- Need to make remove based on what is in the cart -->
+			<div class="card col-sm-4 rounded">
+			  <div class="card-body">
+				<h5 class="card-title"> {{ object.book.title }}</h5>
+				<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
+				<p class="card-text">{{ object.book.edition }} Edition</p>
+				<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+				<p class="card-text">Price: ${{ object.price}}</p>
+				<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+			  </div>
+			</div>
+		  {% endfor %}
+		</div>
+	{% else %}
+		<p>You have no suggestions at the moment. Check back later for more.</p>
+	{% endif %}
+
+	<strong>Buyer Rating:</strong>
+	<br/>
+	<br/>
+	<strong>Seller Rating:</strong>
+	<br/>
+	<br/>
+	{% if cart %}
+	<Strong>Your Cart:</Strong>
+	  {% for product in cart %}
+		<div class="col p-md-3">
+		  <div class="card rounded" style="width: 100%;">
+			<div class="card-body">
+			  <h5 class="card-title"> {{ product.product.book.title }}</h5>
+			  <p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
+			  <p class="card-text">{{ product.product.book.edition }} Edition</p>
+			  <p class="card-text">${{ product.price}} </p>
+			  <p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
+			  <a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary">Remove From Cart</a>
+			</div>
 		  </div>
 		</div>
-        {% endif %}
+
 	  {% endfor %}
-	</div>
+	{% else %}
+	<p>Your cart is empty.</p>
+	{% endif %} 
+
+	{% if user.username in "reinersr" %}
+		
+		<a class="btn btn-primary" href="{% url 'admin' %}">Go to Admin Page</a>
+		<br/>
+		<br/>
+		
+	{% endif %}
+
 {% else %}
-	<p>You have no suggestions at the moment. Check back later for more.</p>
+	<meta http-equiv="refresh" content="time; URL=../login" />
+
 {% endif %}
-
-<strong>Buyer Rating:</strong>
-<br/>
-<br/>
-<strong>Seller Rating:</strong>
-<br/>
-<br/>
-{% if cart %}
-<Strong>Your Cart:</Strong>
-  {% for product in cart %}
-    <div class="col p-md-3">
-      <div class="card rounded" style="width: 100%;">
-        <div class="card-body">
-          <h5 class="card-title"> {{ product.product.book.title }}</h5>
-          <p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
-          <p class="card-text">{{ product.product.book.edition }} Edition</p>
-          <p class="card-text">${{ product.price}} </p>
-          <p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
-          <a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary">Remove From Cart</a>
-        </div>
-      </div>
-    </div>
-
-  {% endfor %}
-{% else %}
-<p>Your cart is empty.</p>
-{% endif %} 
-
-<!-- Should be moved to a different page -->
-<strong>ADMIN!</strong>
-<br/>
-Welcome admin {{user.username}}!
-<br/>
-There have been {{ num_books }} books put up for sale.
-<br/>
-{{num_listings}} of those are still for sale.
-<br/>
-There are {{num_users}} users registered.
-<br/>
-<br/>
-Reports
-<br/>
-users with low ratings
-
-
-
-
-
-
-
-
-
-
 
 {%endblock%}

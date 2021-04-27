@@ -6,6 +6,7 @@
     <h2>Some stuff</h2>
     {% if user.is_authenticated %}
         Hi {{ user.username }}!
+		<br/>
         <a class="btn btn-primary" href="{% url 'profile' %}">Profile</a>
         <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
     {% else %}
