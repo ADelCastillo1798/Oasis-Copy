@@ -30,6 +30,9 @@ class Listing(models.Model):
                         on_delete = models.SET_NULL
                         )
     price= models.DecimalField(max_digits=10, decimal_places=2)
+    hide_listing = models.BooleanField(default=False)
+    times_reported = models.SmallIntegerField(default=0)
+    report = models.ForeignKey('ReportListing',null = True, on_delete = models.SET_NULL)
 
     # not yet sure how users work - may want users not to be a model and instead use django default user handling
     # posted_by = models.ForeignKey('User', on_delete=models.SET_NULL,null=True)
@@ -104,11 +107,8 @@ class Message(models.Model):
     class Meta:
         ordering = ['-timestamp']
 
-class Report(models.Model):
+class ReportListing(models.Model):
     sent_by = models.ForeignKey(User, default = 1,
-                        null = True,
-                        on_delete = models.SET_NULL)
-    reported_listing = models.ForeignKey(Listing, default = 1,
                         null = True,
                         on_delete = models.SET_NULL)
     date_reported = models.DateTimeField(auto_now_add=True)

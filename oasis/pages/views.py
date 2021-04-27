@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message, User, Report
+from pages.models import Book, Listing, Conversation, Message, User, ReportListing
 
 from django.views import generic
 from django.contrib.auth import login, authenticate
@@ -197,11 +197,14 @@ def admin(request):
     }
     return render(request, 'admin_view.html', context=vars)
 
-def report(request, oid):
-    new_report = Report(reported_listing = Listing.objects.filter(id=oid).first())
-   # new_report.reported_listing = request
+def reportlisting(request, oid):
+    reportedlisting = Listing.objects.filter(id=oid).first()
+    new_report = ReportListing()
     new_report.sent_by = request.user
     new_report.save()
+    reportedlisting.report = new_report
+    reportedlisting.times_reported = reportedlisting.times_reported + 1
+    reportedlisting.save()
     return redirect('/')
 
 
