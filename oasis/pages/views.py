@@ -174,6 +174,8 @@ def profile(request):
         cart_item.append(i['product'].id)
     for j in cart_item:
         item = item.exclude(id = j)
+    if(len(item)>3):
+        item = item[:3]
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
