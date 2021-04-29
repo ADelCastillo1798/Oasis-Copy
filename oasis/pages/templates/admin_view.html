@@ -24,6 +24,21 @@
 	{% for object in report %}
 		<div class="card col-sm-4 rounded">
 			<div class="card-body">
+				<h5 class="card-title"> {{ object.book.title }}</h5>
+				<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
+				<p class="card-text">{{ object.book.edition }} Edition</p>
+				<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+				<p class="card-text">Price: ${{ object.price}}</p>
+				<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+				<p class="card-text">Reporting Party: {{object.report.sent_by}}</p>
+				<p class="card-text">Report Date: {{object.report.date_reported}}</p>
+			</div>
+		</div>
+		
+		
+		<!---
+		<div class="card col-sm-4 rounded">
+			<div class="card-body">
 				<h5 class="card-title"> {{ object.reported_listing.book.title }}</h5>
 				<p class="card-subtitle mb-2 text-muted"> {{ object.reported_listing.book.author }}</p>
 				<p class="card-text">{{ object.reported_listing.book.edition }} Edition</p>
@@ -34,6 +49,7 @@
 				<p class="card-text">Report Date: {{object.date_reported}}</p>
 			</div>
 		</div>
+		-->
 	{% endfor %}
 	<br/>
 	<br/>

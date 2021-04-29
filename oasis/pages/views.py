@@ -175,7 +175,7 @@ def profile(request):
     for j in cart_item:
         item = item.exclude(id = j)
     if(len(item)>3):
-        item = item[:3]
+        item = item.order_by("?")[:3]
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
@@ -189,11 +189,15 @@ def profile(request):
 def admin(request):
     num_books = Book.objects.all().count()
     num_listings = Listing.objects.all().count()
+    listings = Listing.objects.all()
+    item = []
+    item = listings.exclude(report = None)
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
 		'num_users':User.objects.all().count(),
-		'report':Report.objects.all()
+		#'report':ReportListing.objects.all()
+        'report':item,
     }
     return render(request, 'admin_view.html', context=vars)
 
