@@ -176,6 +176,7 @@ def profile(request):
         item = item.exclude(id = j)
     if(len(item)>3):
         item = item.order_by("?")[:3]
+    my_books = listings.filter(user = request.user)
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
@@ -183,6 +184,7 @@ def profile(request):
 		'listings':listings,
 		'cart':cart,
 		'left':item,
+        'my_books':my_books
     }
     return render(request, 'profile.html', context=vars)
 

@@ -9,7 +9,26 @@
 	<br/>
 	<br/>
 	<strong>My books:</strong>
-	
+	{% if my_books %}
+		<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
+		  {% for object in my_books %}
+			<div class="card col-sm-4 rounded">
+			  <div class="card-body">
+				<h5 class="card-title"> {{ object.book.title }}</h5>
+				<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
+				<p class="card-text">{{ object.book.edition }} Edition</p>
+				<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+				<p class="card-text">Price: ${{ object.price}}</p>
+				<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+			  </div>
+			</div>
+		  {% endfor %}
+		</div>
+		<a class="btn btn-primary" href="{% url 'sellerlisting' %}">List another book</a>
+	{% else %}
+		<p>You have not listed any books yet.</p>
+		<a class="btn btn-primary" href="{% url 'sellerlisting' %}">List a book</a>
+	{% endif %}
 	<br/>
 	<br/>
 
@@ -17,7 +36,6 @@
 	{% if left %}
 		<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
 		  {% for object in left %}
-			 <!-- Need to make remove based on what is in the cart -->
 			<div class="card col-sm-4 rounded">
 			  <div class="card-body">
 				<h5 class="card-title"> {{ object.book.title }}</h5>
