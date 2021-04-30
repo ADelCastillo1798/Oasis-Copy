@@ -15,7 +15,9 @@
 	There are {{num_users}} users registered.
 	<br/>
 	<br/>
-	There have been {{search}} searches.
+	{% for num in searches %}
+		There have been {{num.count}} searches.
+	{% endfor %}
 	<!-- Need to figure out how to count searches -->
 	<br/>
 	<br/>
@@ -58,7 +60,9 @@
 	
 	<br/>
 	<br/>
-	<a class="btn btn-primary" href="{% url 'admin:index' %}">Account Managment</a>
+	<a class="btn btn-primary" href="{% url 'admin:index' %}">Account Management</a>
+	<br/>
+	<br/>
 	
 {% else %}
 	<br/>

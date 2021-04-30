@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message, User, ReportListing
+from pages.models import Book, Listing, Conversation, Message, User, ReportListing, NumSearch
 
 from django.views import generic
 from django.contrib.auth import login, authenticate
@@ -87,6 +87,9 @@ class ListingView(generic.ListView):
                 ).distinct()
         else:
             queryset = Listing.objects.all()
+        for i in NumSearch.objects.all():
+            i.count = i.count + 1
+            i.save()
         return queryset
 
 
@@ -201,6 +204,7 @@ def admin(request):
 		'num_users':User.objects.all().count(),
 		#'report':ReportListing.objects.all()
         'report':item,
+        'searches':NumSearch.objects.all(),
     }
     return render(request, 'admin_view.html', context=vars)
 
