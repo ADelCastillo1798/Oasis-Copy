@@ -2,7 +2,7 @@
 
 {%block content%}
 
-{% if user.username in "reinersr" %}
+{% if user.is_admin or user.is_superuser %}
 	<strong>ADMIN</strong>
 	<br/>
 	Welcome admin {{user.username}}!
@@ -19,7 +19,7 @@
 	<!-- Need to figure out how to count searches -->
 	<br/>
 	<br/>
-	User Reports
+	<strong>User Reports</strong>
 	<br/>
 	{% for object in report %}
 		<div class="card col-sm-4 rounded">
@@ -53,11 +53,12 @@
 	{% endfor %}
 	<br/>
 	<br/>
-	Users with low ratings
+	<strong>Users with low ratings</strong>
 	<br/>
 	
 	<br/>
 	<br/>
+	<a class="btn btn-primary" href="{% url 'admin:index' %}">Account Managment</a>
 	
 {% else %}
 	<br/>

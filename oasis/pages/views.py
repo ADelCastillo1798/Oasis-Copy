@@ -174,6 +174,7 @@ def profile(request):
         cart_item.append(i['product'].id)
     for j in cart_item:
         item = item.exclude(id = j)
+    item = item.exclude(user = request.user)
     if(len(item)>3):
         item = item.order_by("?")[:3]
     my_books = listings.filter(user = request.user)
