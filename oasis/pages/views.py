@@ -85,11 +85,11 @@ class ListingView(generic.ListView):
                 Q(book__author__icontains=val) |
                 Q(book__isbn__icontains=val)
                 ).distinct()
+            for i in NumSearch.objects.all():
+                i.count = i.count + 1
+                i.save()
         else:
             queryset = Listing.objects.all()
-        for i in NumSearch.objects.all():
-            i.count = i.count + 1
-            i.save()
         return queryset
 
 
