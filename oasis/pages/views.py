@@ -218,5 +218,19 @@ def reportlisting(request, oid):
     reportedlisting.save()
     return redirect('/')
 
+def clearlisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.report.delete()
+    return redirect('/pages/admin/')
 
+def removelisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.delete()
+    return redirect('/pages/admin/')
 
