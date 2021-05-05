@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from pages.models import Book, Listing, Conversation, Message, User, ReportListing, NumSearch
 
 from django.views import generic
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
@@ -167,20 +167,23 @@ def newconversation(request, id):
     return redirect("/pages/messaging")
 
 def profile(request):
-    num_books = Book.objects.all().count()
-    num_listings = Listing.objects.all().count()
-    listings = Listing.objects.all()
-    cart = Cart(request)
-    cart_item = []
-    item = Listing.objects.all()
-    for i in cart:
-        cart_item.append(i['product'].id)
-    for j in cart_item:
-        item = item.exclude(id = j)
-    item = item.exclude(user = request.user)
-    if(len(item)>3):
-        item = item.order_by("?")[:3]
-    my_books = listings.filter(user = request.user)
+    if(request.user.is_authenticated):
+        num_books = Book.objects.all().count()
+        num_listings = Listing.objects.all().count()
+        listings = Listing.objects.all()
+        cart = Cart(request)
+        cart_item = []
+        item = Listing.objects.all()
+        for i in cart:
+            cart_item.append(i['product'].id)
+        for j in cart_item:
+            item = item.exclude(id = j)
+        item = item.exclude(user = request.user)
+        if(len(item)>3):
+            item = item.order_by("?")[:3]
+        my_books = listings.filter(user = request.user)
+    else:
+        return redirect('/pages/login/')
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
@@ -233,4 +236,8 @@ def removelisting(request, oid):
     for i in item:
         i.delete()
     return redirect('/pages/admin/')
+
+def logout_user(request):
+    logout(request)
+    return redirect('/pages/')
 

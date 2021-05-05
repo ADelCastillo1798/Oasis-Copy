@@ -25,6 +25,7 @@ urlpatterns = [
     path('report/<uuid:oid>/', views.reportlisting, name='reportlisting'),
     path('clearListing/<uuid:oid>/', views.clearlisting, name='clearlisting'),
     path('removeListing/<uuid:oid>/', views.removelisting, name='removelisting'),
+    path('logout/', views.logout_user, name='logout'),
 
 ]
  
