@@ -7,6 +7,8 @@
 	<br/>
 	Welcome {{user.username}}
 	<br/>
+	<a class="btn btn-primary" href="{% url 'logout' %}">Log out</a>
+	<br/>
 	<br/>
 	<strong>My books:</strong>
 	{% if my_books %}

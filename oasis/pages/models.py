@@ -113,6 +113,7 @@ class ReportListing(models.Model):
                         on_delete = models.SET_NULL)
     date_reported = models.DateTimeField(auto_now_add=True)
 
-
+class NumSearch(models.Model):
+    count = models.IntegerField(default=0)
 
 

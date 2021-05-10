@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message, User, ReportListing
+from pages.models import Book, Listing, Conversation, Message, User, ReportListing, NumSearch
 
 from django.views import generic
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
@@ -85,6 +85,9 @@ class ListingView(generic.ListView):
                 Q(book__author__icontains=val) |
                 Q(book__isbn__icontains=val)
                 ).distinct()
+            for i in NumSearch.objects.all():
+                i.count = i.count + 1
+                i.save()
         else:
             queryset = Listing.objects.all()
         return queryset
@@ -164,19 +167,23 @@ def newconversation(request, id):
     return redirect("/pages/messaging")
 
 def profile(request):
-    num_books = Book.objects.all().count()
-    num_listings = Listing.objects.all().count()
-    listings = Listing.objects.all()
-    cart = Cart(request)
-    cart_item = []
-    item = Listing.objects.all()
-    for i in cart:
-        cart_item.append(i['product'].id)
-    for j in cart_item:
-        item = item.exclude(id = j)
-    if(len(item)>3):
-        item = item.order_by("?")[:3]
-    my_books = listings.filter(user = request.user)
+    if(request.user.is_authenticated):
+        num_books = Book.objects.all().count()
+        num_listings = Listing.objects.all().count()
+        listings = Listing.objects.all()
+        cart = Cart(request)
+        cart_item = []
+        item = Listing.objects.all()
+        for i in cart:
+            cart_item.append(i['product'].id)
+        for j in cart_item:
+            item = item.exclude(id = j)
+        item = item.exclude(user = request.user)
+        if(len(item)>3):
+            item = item.order_by("?")[:3]
+        my_books = listings.filter(user = request.user)
+    else:
+        return redirect('/pages/login/')
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
@@ -200,6 +207,7 @@ def admin(request):
 		'num_users':User.objects.all().count(),
 		#'report':ReportListing.objects.all()
         'report':item,
+        'searches':NumSearch.objects.all(),
     }
     return render(request, 'admin_view.html', context=vars)
 
@@ -213,5 +221,23 @@ def reportlisting(request, oid):
     reportedlisting.save()
     return redirect('/')
 
+def clearlisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.report.delete()
+    return redirect('/pages/admin/')
 
+def removelisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.delete()
+    return redirect('/pages/admin/')
+
+def logout_user(request):
+    logout(request)
+    return redirect('/pages/')
 

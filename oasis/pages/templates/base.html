@@ -10,7 +10,7 @@
   {% block styles %}
   {% endblock %}  
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
   {% block sidebar %}
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <div class="container-fluid">
@@ -32,9 +32,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'cart:cartdetail' %}">Cart</a>
           </li>
-		      <li class="nav-item">
-			       <a class="nav-link" href="{% url 'profile' %}">My Profile</a>
-		      </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile' %}">My Profile</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'messaging' %}">Messaging</a>
           </li>
@@ -49,6 +49,40 @@
     </div>
   </nav>
   {% endblock %}
-  <div class="col-sm-12">{% block content %}{% endblock %}</div>
+  <div class="col-sm-12">
+    {% block content %}{% endblock %}
+  </div>
+  
 </body>
+<div>
+  {% block footer %}
+  <footer class="page-footer font-small pt-4 bg-primary mt-auto">
+    <div class="container-fluid text-center">
+      <!-- Grid row -->
+      <div class="row justify-content-center">
+        <!-- Grid column -->
+        <div class="col-md-2 mb-md-0 mb-3">
+          <a class="text-decoration-none text-light" href="{% url 'index' %}"><h5>HOME</h5></a>
+        </div>
+        <!-- Grid column -->
+        <div class="col-md-2 mb-md-0 mb-3">
+          <a class="text-decoration-none text-light" href="{% url 'listings' %}"><h5>BUY</h5></a>
+        </div>
+        <div class="col-md-2 mb-md-0 mb-3">
+          <a class="text-decoration-none text-light" href="{% url 'sellerlisting' %}"><h5>SELL</h5></a>
+        </div>
+        <div class="col-md-2 mb-md-0 mb-3">
+          <a class="text-decoration-none text-light" href="{% url 'messaging' %}"><h5>MESSAGES</h5></a>
+        </div>
+        <div class="col-md-2 mb-md-0 mb-3">
+          <a class="text-decoration-none text-light" href="{% url 'profile' %}"><h5>PROFILE</h5></a>
+        </div>
+      </div>
+      <!-- Grid row -->
+      
+    </div>
+    
+  </footer>
+  {% endblock %}
+</div>
 </html>
