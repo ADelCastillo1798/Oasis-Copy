@@ -27,6 +27,7 @@ def home(request):
     context = {
         'num_books': num_books,
         'num_listings': num_listings,
+        'num_users': User.objects.all().count(),
     }
 
     return render(request, 'index.html', context=context)
