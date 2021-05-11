@@ -77,12 +77,6 @@ class ListingView(generic.ListView):
     queryset = Listing.objects.all()
     template_name = 'listings_view.html'  # Specify your own template name/location
 
-    allowed_filters = {
-        'title': 'title',
-        'author': 'author',
-        'condition': 'condition',
-        }
-
     def get_queryset(self, *args, **kwargs):
 
         val = self.request.GET.get("q")
@@ -97,8 +91,12 @@ class ListingView(generic.ListView):
                 i.save()
         else:
             queryset = Listing.objects.all()
+        
         condition_field = self.request.GET.get('condition_field')
-        queryset = queryset.filter(condition=condition_field)
+        if condition_field is None:
+            queryset = queryset
+        else:
+            queryset = queryset.filter(condition=condition_field)
         return queryset
 
     def get_context_data(self, *args, **kwargs):
