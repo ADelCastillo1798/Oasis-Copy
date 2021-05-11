@@ -185,9 +185,9 @@ def profile(request):
         my_books = listings.filter(user = request.user)
     else:
         return redirect('/pages/login/')
-    # for i in User.objects.all().filter(username='penguin'):
-        # i.profile.buyer_rating = 2
-        # i.profile.seller_rating = 3
+    # for i in User.objects.all().filter(username='testuser2'):
+        # i.profile.buyer_rating = 3
+        # i.profile.seller_rating = 2
         # i.save()
     vars = {
         'num_books':num_books,
