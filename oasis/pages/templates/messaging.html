@@ -9,6 +9,7 @@
 {% block content %}
 <!-- {{request.user.username}}
 
+
 <p>Conversations from context: {{ conversations }}</p> -->
 <div class="container">
   <div class="row">
@@ -31,11 +32,17 @@
 
     <!-- chat box -->
     <div class="col-8 px-0" id="current-conversation">
+      <!-- <div class="media w-50 ml-auto mb-3"> -->
+        <div class="d-flex justify-content-end bg-gray px-4 py-2 bg-light">
+          <a href='' class="btn btn-success btn-sm invisible" id="close-convo-btn">Remove From Cart</a>
+          <!-- <button type="button" class="btn btn-success btn-sm">Mark complete</button> -->
+        </div>
+      <!-- </div> -->
 
       <!-- Area for messages to be added -->
       <div class="px-4 py-5 bg-white" id = "chat-log">
-        
-      </div>  
+
+      </div>
 
       <!-- New message entry -->
       <div class="input-group mb-3 bg-light">
@@ -77,14 +84,14 @@
       };
   }
 
-  // use: JSON.parse(json,JSON.dateParser); 
+  // use: JSON.parse(json,JSON.dateParser);
   let sessionKey = '{{ request.session.session_key }}';
   let currentUser = '{{ request.user.id }}';
   let msgs = JSON.parse('{{messages|safe}}',JSON.dateParser);
   var chatSocket;
 
   function loadMessage(data) {
-        
+
 
         //create new item for newest message
         let div1 = document.createElement('div');
@@ -92,7 +99,7 @@
         let div3 = document.createElement('div');
         let message = document.createElement("p");
         let timestamp = document.createElement("p");
-        //add message data 
+        //add message data
         message.append(data.message);
         timestamp.className = "small text-muted";
         //add structure
@@ -101,10 +108,10 @@
         div2.append(div3);
         div1.append(div2);
         //add formatting
-        
+
         if (data.sentby_id == currentUser){
           //classes depends on whether sent by current user or other user
-          //this prints to the right 
+          //this prints to the right
           div1.className = "media w-50 ml-auto mb-3";
           div2.className = "media-body";
           div3.className="bg-primary rounded py-2 px-3 mb-2"
@@ -117,7 +124,7 @@
           div2.className = "media-body ml-3";
           div3.className="bg-light rounded py-2 px-3 mb-2"
           message.className = "text-small mb-0 text-muted"
-          
+
         }
         //add to chat log
         document.querySelector('#chat-log').append(div1);
@@ -135,8 +142,14 @@
       let msg = current_conversation[index]
       loadMessage(msg);
     }
+    let close_btn = document.getElementById("close-convo-btn")
+    // let startofstring="{% url 'messaging/closeconversation' user_id="
+    // close_btn.href=startofstring.concat(currentUser, " conversation_id=", conversation_id, " %}");
+    let startofstring="messaging/closeconversation/"
+    close_btn.href=startofstring.concat(currentUser, "/", conversation_id);
+    close_btn.className="btn btn-success btn-sm"
   }
-  
+
   //Robby
   function sendReminder(conversation_id){
 	let current_conversation = msgs.filter(item => item[0] == conversation_id);
@@ -185,7 +198,7 @@
       console.log(data);
       loadMessage(data);
     }
-    
+
 
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
@@ -202,7 +215,7 @@
         const messageInputDom = document.querySelector('#chat-message-input');
         //get text from input field
         const message = messageInputDom.value;
-        //send message 
+        //send message
         chatSocket.send(JSON.stringify({
             'message': message,
             'conversation_id': conversation_id,

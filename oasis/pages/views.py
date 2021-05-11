@@ -13,9 +13,8 @@ from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-import json 
+import json
 from cart.cart import Cart
-
 
 
 def home(request):
@@ -81,10 +80,8 @@ class ListingView(generic.ListView):
         val = self.request.GET.get("q")
         if val:
             queryset = Listing.objects.filter(
-                Q(book__title__icontains=val) |
-                Q(book__author__icontains=val) |
-                Q(book__isbn__icontains=val)
-                ).distinct()
+                Q(book__title__icontains=val) | Q(book__author__icontains=val)
+                | Q(book__isbn__icontains=val)).distinct()
         else:
             queryset = Listing.objects.all()
         return queryset
@@ -113,7 +110,8 @@ def sellerlisting(request):
                 edition=edition,
                 pub_year=pub_year)
             new_book.save()
-            new_listing = Listing(book=new_book, condition=condition, price=price)
+            new_listing = Listing(
+                book=new_book, condition=condition, price=price)
             new_listing.user = request.user
             new_listing.save()
             return redirect('/')
@@ -136,6 +134,7 @@ def chat(request, conversation_id):
             # 'messages': conversation.message_set,
         })
 
+
 @login_required(login_url="/pages/login")
 def messaging(request):
     #get current user
@@ -148,20 +147,52 @@ def messaging(request):
     message_list = []
     for conversation in conversations:
         # print(conversation.message_set.all().values())
-        message_list.append([conversation.id,list(conversation.message_set.values())])
+        message_list.append(
+            [conversation.id,
+             list(conversation.message_set.values())])
     messages = json.dumps(message_list, cls=DjangoJSONEncoder)
-    
+
     return render(request, 'messaging.html', {
         'current_user': current_user,
         'conversations': conversations,
         'messages': messages
     })
 
+
+def closeconversation(request, user_id, conversation_id):
+    conversation = Conversation.objects.get(id=conversation_id)
+    print(conversation.seller.id, conversation.buyer.id, user_id)
+    print(type(conversation.seller.id), type(user_id))
+    if str(conversation.seller.id) == user_id:
+        if conversation.state == '0':  #conversation is active
+            conversation.state = '2'  #change status to marked complete by seller
+        elif conversation.state == '1':  #conversation has been marked completed by buyer
+            conversation.state = '3'  #change status to complete
+        else:
+            #conversation has already been marked complete by this user
+            print("conversation already marked complete")
+    elif str(conversation.buyer.id) == user_id:
+        if conversation.state == '0':  #conversation is active
+            conversation.state = '1'  #change status to marked complete by seller
+        elif conversation.state == '2':  #conversation has been marked completed by buyer
+            conversation.state = '3'  #change status to complete
+        else:
+            #conversation has already been marked complete by this user
+            print("conversation already marked complete")
+    else:
+        print(
+            "Something's gone wrong. Only the seller and buyer should have access to this converation."
+        )
+    return redirect("/pages/messaging")
+
+
 @login_required(login_url="/pages/login")
 def newconversation(request, id):
     posted_by = Listing.objects.get(id=id).user
-    conversation, is_new = Conversation.objects.get_or_create(id=id, seller = posted_by, buyer=request.user)
+    conversation, is_new = Conversation.objects.get_or_create(
+        id=id, seller=posted_by, buyer=request.user)
     return redirect("/pages/messaging")
+
 
 def profile(request):
     num_books = Book.objects.all().count()
@@ -173,35 +204,37 @@ def profile(request):
     for i in cart:
         cart_item.append(i['product'].id)
     for j in cart_item:
-        item = item.exclude(id = j)
-    if(len(item)>3):
+        item = item.exclude(id=j)
+    if (len(item) > 3):
         item = item.order_by("?")[:3]
-    my_books = listings.filter(user = request.user)
+    my_books = listings.filter(user=request.user)
     vars = {
-        'num_books':num_books,
-		'num_listings':num_listings,
-		'num_users':User.objects.all().count(),
-		'listings':listings,
-		'cart':cart,
-		'left':item,
-        'my_books':my_books
+        'num_books': num_books,
+        'num_listings': num_listings,
+        'num_users': User.objects.all().count(),
+        'listings': listings,
+        'cart': cart,
+        'left': item,
+        'my_books': my_books
     }
     return render(request, 'profile.html', context=vars)
+
 
 def admin(request):
     num_books = Book.objects.all().count()
     num_listings = Listing.objects.all().count()
     listings = Listing.objects.all()
     item = []
-    item = listings.exclude(report = None)
+    item = listings.exclude(report=None)
     vars = {
-        'num_books':num_books,
-		'num_listings':num_listings,
-		'num_users':User.objects.all().count(),
-		#'report':ReportListing.objects.all()
-        'report':item,
+        'num_books': num_books,
+        'num_listings': num_listings,
+        'num_users': User.objects.all().count(),
+        #'report':ReportListing.objects.all()
+        'report': item,
     }
     return render(request, 'admin_view.html', context=vars)
+
 
 def reportlisting(request, oid):
     reportedlisting = Listing.objects.filter(id=oid).first()
@@ -212,6 +245,3 @@ def reportlisting(request, oid):
     reportedlisting.times_reported = reportedlisting.times_reported + 1
     reportedlisting.save()
     return redirect('/')
-
-
-

@@ -93,6 +93,13 @@ class Conversation(models.Model):
                         null = True,
                         on_delete = models.SET_NULL
             )
+    state = models.CharField(
+        max_length=1,
+        choices=STATUS,
+        blank=True,
+        default=0,
+        help_text='Conversation status',
+    )
 
 
 class Message(models.Model):
