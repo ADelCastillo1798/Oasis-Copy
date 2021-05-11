@@ -9,6 +9,7 @@
 </div>
 
 <div class="text-center">
+    {% if user.is_authenticated %}
     <div>
         <p>Are you…</p>
         <a class="btn btn-primary btn-lg" href="{% url 'listings' %}">Buying</a>
@@ -19,14 +20,14 @@
         <a class="btn btn-primary btn-lg" href="{% url 'sellerlisting' %}">Selling</a>
         <p>Sell unwanted books with ease</p>
     </div>
+    
+    {% else %}
     <div class="text-center">
-        {% if user.is_authenticated %}
-        Hi {{ user.username }}!
-        <br/>
-        <a class="btn btn-primary" href="{% url 'profile' %}">Profile</a>
-        {% else %}
-        <a class="btn btn-lg btn-primary" href="{% url 'login' %}">Login</a>
-        {% endif %}
+        <p>You don't appear to be singed in! Login or Sign Up now to access our wonderful platform :) </p>
+        <a class="btn btn-lg btn-primary mr-3" href="{% url 'login' %}">Login</a>
+        <a class="btn btn-lg btn-primary" href="{% url 'clientcreation' %}">Sign Up Here</a>
     </div>
+    {% endif %}
+    
 </div>
 {% endblock %}
