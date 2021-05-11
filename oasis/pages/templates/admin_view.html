@@ -37,6 +37,7 @@
 				<p class="card-text">Reporting Party: {{object.report.sent_by}}</p>
 				<p class="card-text">Report Date: {{object.report.date_reported}}</p>
 				<a href="{% url 'clearlisting' object.id %}" class="btn btn-primary">Clear Report</a>
+				<a href="{% url 'newuserconversation' object.user.id %}" class="btn btn-primary">Message User</a>
 				<a href="{% url 'removelisting' object.id %}" class="btn btn-primary">Remove Listing</a>
 				<a href="{% url 'ban_user' object.user.id %}" class="btn btn-primary">Ban User</a>
 			</div>
@@ -70,7 +71,7 @@
 				<p class="card-text">Rating: {{ users.buyer_rating }}</p>
 				<br/>
 				<a href="{% url 'ban_user' users.user.id %}" class="btn btn-primary">Ban User</a>
-				<a href="{% url 'admin' %}" class="btn btn-primary">Message User</a>
+				<a href="{% url 'newuserconversation' users.user.id %}" class="btn btn-primary">Message User</a>
 			</div>
 		</div>
 		<br/>
@@ -86,7 +87,7 @@
 				<p class="card-text">Rating: {{ users.buyer_rating }}</p>
 				<br/>
 				<a href="{% url 'ban_user' users.user.id %}" class="btn btn-primary">Ban User</a>
-				<a href="{% url 'admin' %}" class="btn btn-primary">Message User</a>
+				<a href="{% url 'newuserconversation' users.user.id %}" class="btn btn-primary">Message User</a>
 			</div>
 		</div>
 		<br/>

@@ -167,6 +167,12 @@ def newconversation(request, id):
     conversation, is_new = Conversation.objects.get_or_create(id=id, seller = posted_by, buyer=request.user)
     return redirect("/pages/messaging")
 
+@login_required(login_url="/pages/login")
+def newuserconversation(request, oid):
+    target = User.objects.all().filter(id = oid)
+    conversation, is_new = Conversation.objects.get_or_create(seller = target[0], buyer=request.user)
+    return redirect("/pages/messaging")
+
 def profile(request):
     if(request.user.is_authenticated):
         num_books = Book.objects.all().count()

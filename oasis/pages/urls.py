@@ -21,6 +21,7 @@ urlpatterns = [
     path('sellerlisting/', views.sellerlisting, name='sellerlisting'),
     path('profile/', views.profile, name='profile'),
     path('newconversation/<uuid:id>/', views.newconversation, name='newconversation'),
+    path('newuserconversation/<int:oid>/', views.newuserconversation, name='newuserconversation'),
     path('admin/', views.admin, name='admin'),
     path('report/<uuid:oid>/', views.reportlisting, name='reportlisting'),
     path('clearListing/<uuid:oid>/', views.clearlisting, name='clearlisting'),
