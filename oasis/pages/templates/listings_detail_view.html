@@ -38,7 +38,7 @@
             <p><strong>Price:</strong> ${{ object.price }} </p>
             <p><strong>Posted by: </strong> {{ object.user.username }} on {{ object.date_added }}</p>
         </div>
-        <div id="actionsSection" class="col-lg-2 col-md-2 col-sm-2">
+        <div id="actionsSection" class="col-lg-2 col-md-2 col-sm-2 my-auto">
             <a href="{% url 'cart:cartadd' object.id%}" class="btn btn-primary my-2 mx-auto">Add To Cart</a>
             <!-- <a href="{% url 'reportlisting' object.id %}" class="btn btn-primary my-2 mx-auto">Report Listing</a> -->
         </div>
