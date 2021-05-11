@@ -235,10 +235,22 @@ def removelisting(request, oid):
     item = Listing.objects.all().exclude(report = None)
     item = item.filter(id=oid)
     for i in item:
+        book = i.book
         i.delete()
+        book.delete()
     return redirect('/pages/admin/')
 
 def logout_user(request):
     logout(request)
     return redirect('/pages/')
 
+def ban_user(request, oid, lid):
+    u = User.objects.all().filter(id=oid)
+    for i in u:
+        i.delete()
+    item = Listing.objects.all().filter(id=lid)
+    for i in item:
+        book = i.book
+        i.delete()
+        book.delete()
+    return redirect('/pages/admin/')

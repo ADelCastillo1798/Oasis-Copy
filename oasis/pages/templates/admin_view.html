@@ -38,6 +38,7 @@
 				<p class="card-text">Report Date: {{object.report.date_reported}}</p>
 				<a href="{% url 'clearlisting' object.id %}" class="btn btn-primary">Clear Report</a>
 				<a href="{% url 'removelisting' object.id %}" class="btn btn-primary">Remove Listing</a>
+				<a href="{% url 'ban_user' object.user.id object.id %}" class="btn btn-primary">Ban User</a>
 			</div>
 		</div>
 		
