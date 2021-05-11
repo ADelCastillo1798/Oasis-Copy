@@ -199,6 +199,11 @@ def newconversation(request, id):
         id=id, seller=posted_by, buyer=request.user)
     return redirect("/pages/messaging")
 
+@login_required(login_url="/pages/login")
+def newuserconversation(request, oid):
+    target = User.objects.all().filter(id = oid)
+    conversation, is_new = Conversation.objects.get_or_create(seller = target[0], buyer=request.user)
+    return redirect("/pages/messaging")
 
 def profile(request):
     num_books = Book.objects.all().count()
@@ -221,13 +226,9 @@ def profile(request):
         'listings': listings,
         'cart': cart,
         'left': item,
-        'my_books': my_books
-        
-@login_required(login_url="/pages/login")
-def newuserconversation(request, oid):
-    target = User.objects.all().filter(id = oid)
-    conversation, is_new = Conversation.objects.get_or_create(seller = target[0], buyer=request.user)
-    return redirect("/pages/messaging")
+        'my_books': my_books,
+    }
+    return render(request, 'profile.html', context=vars)
 
 def admin(request):
     num_books = Book.objects.all().count()
