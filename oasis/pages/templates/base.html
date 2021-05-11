@@ -23,17 +23,23 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="{% url 'clientcreation' %}">Client Creation</a>
-          </li> -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'listings' %}">Listings</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="buyerServices" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Buyer Services
+            </a>
+            <div class="dropdown-menu" aria-labelledby="buyerServices">
+              <a class="dropdown-item" href="{% url 'listings' %}">Listings</a>
+              <a class="dropdown-item" href="{% url 'cart:cartdetail' %}">Cart</a>
+              
+            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'sellerlisting' %}">Sell A Book</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'cart:cartdetail' %}">Cart</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="sellerServices" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Seller Services
+            </a>
+            <div class="dropdown-menu" aria-labelledby="sellerServices">
+              <a class="dropdown-item" href="{% url 'sellerlisting' %}">Sell A Book</a>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'profile' %}">My Profile</a>
