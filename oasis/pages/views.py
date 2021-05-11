@@ -245,12 +245,12 @@ def logout_user(request):
     return redirect('/pages/')
 
 def ban_user(request, oid, lid):
-    u = User.objects.all().filter(id=oid)
-    for i in u:
-        i.delete()
-    item = Listing.objects.all().filter(id=lid)
+    item = Listing.objects.all().filter(user=lid)
     for i in item:
         book = i.book
         i.delete()
         book.delete()
+    u = User.objects.all().filter(id=oid)
+    for i in u:
+        i.delete()
     return redirect('/pages/admin/')
