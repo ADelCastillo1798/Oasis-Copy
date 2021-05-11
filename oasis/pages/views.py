@@ -77,7 +77,14 @@ class ListingView(generic.ListView):
     queryset = Listing.objects.all()
     template_name = 'listings_view.html'  # Specify your own template name/location
 
+    allowed_filters = {
+        'title': 'title',
+        'author': 'author',
+        'condition': 'condition',
+        }
+
     def get_queryset(self, *args, **kwargs):
+
         val = self.request.GET.get("q")
         if val:
             queryset = Listing.objects.filter(
@@ -101,6 +108,8 @@ class ListingView(generic.ListView):
         })
 
         return context
+
+
 
 
 class ListingDetailView(generic.DetailView):

@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from pages.models import Book
 from pages.models import Listing
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import Form, ChoiceField, CharField
+from django.forms import Form, ChoiceField, CharField, MultipleChoiceField
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -36,4 +36,3 @@ class FilterForm(Form):
     CONDITION_CHOICES = (('1', 'New'), ('2', 'Like New'), ('3', 'Lightly Used'),
              ('4', 'Moderately Used'), ('5', 'Heavily Used'))
     condition_field = ChoiceField(choices=CONDITION_CHOICES)
-
