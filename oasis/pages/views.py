@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
-from .forms import ListForm
+from .forms import ListForm, FilterForm
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
@@ -90,7 +90,17 @@ class ListingView(generic.ListView):
                 i.save()
         else:
             queryset = Listing.objects.all()
+        condition_field = self.request.GET.get('condition_field')
+        queryset = queryset.filter(condition=condition_field)
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['form'] = FilterForm(initial={
+            'condition_field': self.request.GET.get('condition_field', ''),
+        })
+
+        return context
 
 
 class ListingDetailView(generic.DetailView):
