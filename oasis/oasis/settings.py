@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'channels',
     'cart',
+    'django_filters',
 ]
 
 CART_SESSION_ID = 'cart'

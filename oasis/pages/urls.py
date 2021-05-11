@@ -20,6 +20,16 @@ urlpatterns = [
         name='listings-detail'),
     path('sellerlisting/', views.sellerlisting, name='sellerlisting'),
     path('profile/', views.profile, name='profile'),
+    path(
+        'newconversation/<uuid:id>/',
+        views.newconversation,
+        name='newconversation'),
+    path('admin/', views.admin, name='admin'),
+    path('report/<uuid:oid>/', views.reportlisting, name='reportlisting'),
+    path(
+        'messaging/closeconversation/<str:user_id>/<uuid:conversation_id>',
+        views.closeconversation,
+        name='closeconversation'),
     path('newconversation/<uuid:id>/', views.newconversation, name='newconversation'),
     path('newuserconversation/<int:oid>/', views.newuserconversation, name='newuserconversation'),
     path('admin/', views.admin, name='admin'),
@@ -30,4 +40,3 @@ urlpatterns = [
     path('ban_user/<int:oid>/', views.ban_user, name='ban_user'),
 
 ]
- 
