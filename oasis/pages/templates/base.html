@@ -18,12 +18,14 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top mb-3">
     <!-- <div class="container-fluid"> -->
       <a class="navbar-brand" href="{% url 'index' %}">Oasis</a>
+      {% if user.is_authenticated %}
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        
         <ul class="navbar-nav mr-auto">
-          {% if user.is_authenticated %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="buyerServices" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Buyer Services
@@ -57,14 +59,14 @@
               <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
             </div>
           </li>
-          {% endif %}
-          
         </ul>
         <form class="form-inline my-2 my-lg-0" name="search" method="GET" action="{% url 'listings' %}"> 
           <input type="text" name="q" placeholder="Search"/>
           <button class="btn btn-outline-light ml-2" type="submit">Search</button>
         </form> 
+        
       </div>
+      {% endif %}
       <!-- </div> -->
       
     </nav>
