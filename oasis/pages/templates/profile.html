@@ -67,9 +67,9 @@
 	<br/>
 	{% if cart %}
 	<Strong>Your Cart:</Strong>
+	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
 	  {% for product in cart %}
-		<div class="col p-md-3">
-		  <div class="card rounded" style="width: 100%;">
+			<div class="card col-sm-4 rounded">
 			<div class="card-body">
 			  <h5 class="card-title"> {{ product.product.book.title }}</h5>
 			  <p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
@@ -77,11 +77,14 @@
 			  <p class="card-text">${{ product.price}} </p>
 			  <p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
 			  <a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary">Remove From Cart</a>
+			  <a href = "{% url 'newconversation' product.product.id%}" class="btn btn-primary" >Contact Seller</a>
 			</div>
 		  </div>
-		</div>
 
 	  {% endfor %}
+	</div>
+	<br/>
+	
 	{% else %}
 	<p>Your cart is empty.</p>
 	{% endif %} 

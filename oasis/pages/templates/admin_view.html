@@ -23,8 +23,9 @@
 	<br/>
 	<strong>User Reports</strong>
 	<br/>
-	{% for object in report %}
-		<div class="card col-sm-4 rounded">
+	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
+		{% for object in report %}
+			<div class="card col-sm-4 rounded">
 			<div class="card-body">
 				<h5 class="card-title"> {{ object.book.title }}</h5>
 				<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
@@ -38,33 +39,22 @@
 				<p class="card-text">Report Date: {{object.report.date_reported}}</p>
 				<a href="{% url 'clearlisting' object.id %}" class="btn btn-primary">Clear Report</a>
 				<a href="{% url 'newuserconversation' object.user.id %}" class="btn btn-primary">Message User</a>
+				<br/>
+				<br/>
 				<a href="{% url 'removelisting' object.id %}" class="btn btn-primary">Remove Listing</a>
 				<a href="{% url 'ban_user' object.user.id %}" class="btn btn-primary">Ban User</a>
 			</div>
 		</div>
 		<br/>
 		
-		<!---
-		<div class="card col-sm-4 rounded">
-			<div class="card-body">
-				<h5 class="card-title"> {{ object.reported_listing.book.title }}</h5>
-				<p class="card-subtitle mb-2 text-muted"> {{ object.reported_listing.book.author }}</p>
-				<p class="card-text">{{ object.reported_listing.book.edition }} Edition</p>
-				<p class="card-text">ISBN-13: {{ object.reported_listing.book.isbn }}</p>
-				<p class="card-text">Price: ${{ object.reported_listing.price}}</p>
-				<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
-				<p class="card-text">Reporting Party: {{object.sent_by}}</p>
-				<p class="card-text">Report Date: {{object.date_reported}}</p>
-			</div>
-		</div>
-		-->
 	{% endfor %}
+	</div>
 	<br/>
 	<br/>
 	<strong>Users with low buyer ratings</strong>
 	<br/>
+	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
 	{% for users in low_buyer %}
-		
 		<div class="card col-sm-4 rounded">
 			<div class="card-body">
 				<h5 class="card-title">User:  {{ users.user }}</h5>
@@ -76,10 +66,12 @@
 		</div>
 		<br/>
 	{% endfor %}
+	</div>
 	
 	<br/>
 	<strong>Users with low seller ratings</strong>
 	<br/>
+	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
 	{% for users in low_seller %}
 		<div class="card col-sm-4 rounded">
 			<div class="card-body">
@@ -92,6 +84,7 @@
 		</div>
 		<br/>
 	{% endfor %}
+	</div>
 	<br/>
 	<br/>
 	<a class="btn btn-primary" href="{% url 'admin:index' %}">Account Management</a>
