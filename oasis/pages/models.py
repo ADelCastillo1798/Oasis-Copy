@@ -5,6 +5,8 @@ from django.urls import reverse
 from pages.choices import *
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 User = settings.AUTH_USER_MODEL
 
@@ -120,6 +122,25 @@ class ReportListing(models.Model):
                         on_delete = models.SET_NULL)
     date_reported = models.DateTimeField(auto_now_add=True)
 
+class NumSearch(models.Model):
+    count = models.IntegerField(default=0)
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    buyer_rating = models.IntegerField(
+        choices = RATINGS,
+        default = 5,
+    )
+    seller_rating = models.IntegerField(
+        choices = RATINGS,
+        default = 5,
+    )
 
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

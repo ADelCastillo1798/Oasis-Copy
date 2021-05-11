@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message, User, ReportListing
+from pages.models import Book, Listing, Conversation, Message, User, ReportListing, NumSearch, Profile
 
 from django.views import generic
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
@@ -26,6 +26,7 @@ def home(request):
     context = {
         'num_books': num_books,
         'num_listings': num_listings,
+        'num_users': User.objects.all().count(),
     }
 
     return render(request, 'index.html', context=context)
@@ -80,8 +81,13 @@ class ListingView(generic.ListView):
         val = self.request.GET.get("q")
         if val:
             queryset = Listing.objects.filter(
-                Q(book__title__icontains=val) | Q(book__author__icontains=val)
-                | Q(book__isbn__icontains=val)).distinct()
+                Q(book__title__icontains=val) |
+                Q(book__author__icontains=val) |
+                Q(book__isbn__icontains=val)
+                ).distinct()
+            for i in NumSearch.objects.all():
+                i.count = i.count + 1
+                i.save()
         else:
             queryset = Listing.objects.all()
         return queryset
@@ -216,22 +222,33 @@ def profile(request):
         'cart': cart,
         'left': item,
         'my_books': my_books
-    }
-    return render(request, 'profile.html', context=vars)
-
+        
+@login_required(login_url="/pages/login")
+def newuserconversation(request, oid):
+    target = User.objects.all().filter(id = oid)
+    conversation, is_new = Conversation.objects.get_or_create(seller = target[0], buyer=request.user)
+    return redirect("/pages/messaging")
 
 def admin(request):
     num_books = Book.objects.all().count()
     num_listings = Listing.objects.all().count()
     listings = Listing.objects.all()
     item = []
-    item = listings.exclude(report=None)
+    item = listings.exclude(report = None)
+    low_buyer = Profile.objects.all().exclude(buyer_rating = 5)
+    low_buyer = low_buyer.exclude(buyer_rating = 4)
+    low_buyer = low_buyer.exclude(buyer_rating = 3)
+    low_seller = Profile.objects.all().exclude(seller_rating = 5)
+    low_seller = low_seller.exclude(seller_rating = 4)
+    low_seller = low_seller.exclude(seller_rating = 3)
     vars = {
-        'num_books': num_books,
-        'num_listings': num_listings,
-        'num_users': User.objects.all().count(),
-        #'report':ReportListing.objects.all()
-        'report': item,
+        'num_books':num_books,
+		'num_listings':num_listings,
+		'num_users':User.objects.all().count(),
+        'report':item,
+        'searches':NumSearch.objects.all(),
+        'low_buyer':low_buyer,
+        'low_seller':low_seller,
     }
     return render(request, 'admin_view.html', context=vars)
 
@@ -245,3 +262,36 @@ def reportlisting(request, oid):
     reportedlisting.times_reported = reportedlisting.times_reported + 1
     reportedlisting.save()
     return redirect('/')
+
+def clearlisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.report.delete()
+    return redirect('/pages/admin/')
+
+def removelisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        book = i.book
+        i.delete()
+        book.delete()
+    return redirect('/pages/admin/')
+
+def logout_user(request):
+    logout(request)
+    return redirect('/pages/')
+
+def ban_user(request, oid):
+    item = Listing.objects.all().filter(user=oid)
+    for i in item:
+        book = i.book
+        i.delete()
+        book.delete()
+    u = User.objects.all().filter(id=oid)
+    for i in u:
+        i.delete()
+    return redirect('/pages/admin/')
