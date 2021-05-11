@@ -93,21 +93,21 @@
       <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
       <div class="row border rounded mb-3" style="min-height: 200px;">
         
-        <div class="col-lg-2 col-md-2 col-sm-2 mx-2 my-auto" >
+        <div class="col-lg-2 col-md-2 col-sm-12 mx-2 my-auto" style="min-height: 50px;">
           Cover image of the book
         </div>
         
-        <div class="col-lg-3 col-md-5 col-sm-2 my-auto">
+        <div class="col-lg-4 col-md-5 col-sm-12 my-auto mr-auto">
           <a class="text-decoration-none text-dark" href="{{ object.get_absolute_url }}" ><h5> {{ object.book.title }}</h5></a>
           <p class="text-muted"> {{ object.book.author }}</p>
-          <p>{{ object.book.edition }} Edition</p>
+          <p> Edition: {{ object.book.edition }}</p>
           <p><strong>ISBN-13:</strong> {{ object.book.isbn }}</p>
         </div>
         
-        <div class="my-auto mr-2 col-lg-6 col-md-6 col-sm-6">
+        <div class="my-auto mr-2 col-lg-3 col-md-3 col-sm-12">
           <span class="mx-2"><strong>Condition:</strong> {{object.get_condition_display}}</span> 
           <span><strong>Price:</strong> ${{ object.price}}</span>
-          <a href="{{ object.get_absolute_url }}" class="btn-lg btn-primary ml-5">Details</a>
+          <a href="{{ object.get_absolute_url }}" class="btn btn-primary ml-5">Details</a>
         </div>
         
       </div>
@@ -126,5 +126,5 @@
   {% else %}
   <p>There are no current listings.</p>
   {% endif %} 
-  {% endblock %}
 </div>
+{% endblock %}
