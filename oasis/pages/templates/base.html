@@ -23,23 +23,38 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="{% url 'clientcreation' %}">Client Creation</a>
-          </li> -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'listings' %}">Listings</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="buyerServices" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Buyer Services
+            </a>
+            <div class="dropdown-menu" aria-labelledby="buyerServices">
+              <a class="dropdown-item" href="{% url 'listings' %}">Listings</a>
+              <a class="dropdown-item" href="{% url 'cart:cartdetail' %}">Cart</a>
+              
+            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'sellerlisting' %}">Sell A Book</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'cart:cartdetail' %}">Cart</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'profile' %}">My Profile</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="sellerServices" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Seller Services
+            </a>
+            <div class="dropdown-menu" aria-labelledby="sellerServices">
+              <a class="dropdown-item" href="{% url 'sellerlisting' %}">Sell A Book</a>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'messaging' %}">Messaging</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="profile" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Profile
+            </a>
+            <div class="dropdown-menu" aria-labelledby="profile">
+              <a class="dropdown-item" href="{% url 'profile' %}">View Profile</a>
+              {% if user.is_admin or user.is_superuser %}
+                <a class="dropdown-item" href="{% url 'admin' %}">View Admin</a>
+              {% endif %}
+              <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+            </div>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" name="search" method="GET" action="{% url 'listings' %}"> 
@@ -51,7 +66,7 @@
       
     </nav>
     {% endblock %}
-  <div class="col-sm-12 mb-3">
+  <div class="col-sm-12 col-lg-12 col-md-12 mb-3">
     {% block content %}{% endblock %}
   </div>
   
