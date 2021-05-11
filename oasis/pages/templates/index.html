@@ -1,18 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="jumbotron" style="background-color: #C7DBFF;">
+<div class="jumbotron pb-4" style="background-color: #C7DBFF;">
     <h1 class="display-3">Welcome to Oasis!</h1>
-    <p class="lead">Textbooks can be dry, but buying them doesn't have to be.</p>
+    <p class="lead">Textbooks can be dry, but buying and selling them doesn't have to be.</p>
     <hr class="my-4">
     <p>Oasis is <em>the</em> place to buy, sell, or donate textbooks on your college campus. Join our growing community of users and get the books you need, or make some money off your old ones! We currently offer <strong>{{ num_books }} different books</strong> in <strong>{{ num_listings }} listings</strong> to <strong>{{ num_users }} unique users</strong> on our platform.</p>
+</div>
+
+<div class="text-center">
+    <div>
+        <p>Are you…</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'listings' %}">Buying</a>
+        <p>Get books at a discounted price</p>
+    </div>
+    <div>
+        <p>or…</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'sellerlisting' %}">Selling</a>
+        <p>Sell unwanted books with ease</p>
+    </div>
     <div class="text-center">
         {% if user.is_authenticated %}
-            Hi {{ user.username }}!
-            <br/>
-            <a class="btn btn-primary" href="{% url 'profile' %}">Profile</a>
+        Hi {{ user.username }}!
+        <br/>
+        <a class="btn btn-primary" href="{% url 'profile' %}">Profile</a>
         {% else %}
-            <a class="btn-lg btn-primary" href="{% url 'login' %}">Login</a>
+        <a class="btn-lg btn-primary" href="{% url 'login' %}">Login</a>
         {% endif %}
     </div>
 </div>
