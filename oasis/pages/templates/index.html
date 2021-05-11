@@ -1,21 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Oasis Home</h1>
-    <p>Textbooks can be dry, but buying them doesn't have to be. Welcome to the Oasis.</p>
-    <h2>Some stuff</h2>
-    {% if user.is_authenticated %}
-        Hi {{ user.username }}!
-		<br/>
-        <a class="btn btn-primary" href="{% url 'profile' %}">Profile</a>
-        <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
-    {% else %}
-        <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
-    {% endif %}
-    <p>Current listings:</p>
-    <ul>
-        <li><strong>Books:</strong> {{ num_books }}</li>
-        <li><strong>Listings:</strong> {{ num_listings }}</li>
-        <li><strong>Users</strong> {{ num_users }}</li>
-    </ul>
+<div class="jumbotron" style="background-color: #C7DBFF;">
+    <h1 class="display-3">Welcome to Oasis!</h1>
+    <p class="lead">Textbooks can be dry, but buying them doesn't have to be.</p>
+    <hr class="my-4">
+    <p>Oasis is <em>the</em> place to buy, sell, or donate textbooks on your college campus. Join our growing community of users and get the books you need, or make some money off your old ones! We currently offer <strong>{{ num_books }} different books</strong> in <strong>{{ num_listings }} listings</strong> to <strong>{{ num_users }} unique users</strong> on our platform.</p>
+    <div class="text-center">
+        {% if user.is_authenticated %}
+            Hi {{ user.username }}!
+            <br/>
+            <a class="btn btn-primary" href="{% url 'profile' %}">Profile</a>
+        {% else %}
+            <a class="btn-lg btn-primary" href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

@@ -27,6 +27,7 @@ def home(request):
     context = {
         'num_books': num_books,
         'num_listings': num_listings,
+        'num_users': User.objects.all().count(),
     }
 
     return render(request, 'index.html', context=context)
@@ -234,10 +235,22 @@ def removelisting(request, oid):
     item = Listing.objects.all().exclude(report = None)
     item = item.filter(id=oid)
     for i in item:
+        book = i.book
         i.delete()
+        book.delete()
     return redirect('/pages/admin/')
 
 def logout_user(request):
     logout(request)
     return redirect('/pages/')
 
+def ban_user(request, oid, lid):
+    item = Listing.objects.all().filter(user=lid)
+    for i in item:
+        book = i.book
+        i.delete()
+        book.delete()
+    u = User.objects.all().filter(id=oid)
+    for i in u:
+        i.delete()
+    return redirect('/pages/admin/')

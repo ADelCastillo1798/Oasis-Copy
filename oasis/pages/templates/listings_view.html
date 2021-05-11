@@ -10,7 +10,7 @@
 <div class="row">
   <div class="col-12 col-lg-12 py-2 mx-auto">
     <form class="form-inline justify-content-center">
-     <!-- <form name="search" method="GET" action="{% url 'listings' %}"> 
+      <!-- <form name="search" method="GET" action="{% url 'listings' %}"> 
         <input type="text" name="q" placeholder="Search"/>
         <button class="btn btn-primary " type="submit">Search</button>
       </form> -->
@@ -18,63 +18,113 @@
   </div>
 </div>
 
-
-{% if object_list %}
 <div class="row mx-auto">
-  <div class="col-lg-2 ml-2">
-    Filter Section
+  <div class="col-lg-2 ml-2 py-2 my-2">
+    <button class="btn-lg btn-primary mb-2 w-100" type="button" data-toggle="collapse" data-target="#filters" aria-expanded="false" aria-controls="collapseExample">
+      Filters
+    </button>
+    <form class="collapse" id="filters">
+      <button class="btn btn-primary my-2 w-100">Apply</button>
+      <div>
+        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#titles" aria-expanded="false" aria-controls="titles">
+          Title
+        </a>
+      </div>
+      <div class="collapse" id="titles">
+        {% for object in object_list %}
+        <p>{{ object.book.title }}</p>
+        {% endfor %}
+      </div>
+      <div>
+        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#authors" aria-expanded="false" aria-controls="authors">
+          Authors
+        </a>
+      </div>
+      <div class="collapse" id="authors">
+        {% for object in object_list %}
+        <p>{{ object.book.author }}</p>
+        {% endfor %}
+      </div>
+      <div>
+        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#fields" aria-expanded="false" aria-controls="fields">
+          Field
+        </a>
+      </div>
+      <div class="collapse" id="fields">
+        Distinct Field Buttons
+      </div>
+      <div>
+        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#courses" aria-expanded="false" aria-controls="coures">
+          Course
+        </a>
+      </div>
+      <div class="collapse" id="courses">
+        Distinct Course Buttons
+      </div>
+      <div>
+        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#editions" aria-expanded="false" aria-controls="editions">
+          Edition
+        </a>
+      </div>
+      <div class="collapse" id="editions">
+        Distinct Edition Buttons
+      </div>
+      <div>
+        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#conditions" aria-expanded="false" aria-controls="conditions">
+          Condition
+        </a>
+      </div>
+      <div class="collapse" id="conditions">
+        <input type='radio' value='1'> New</input>
+        <input type='radio' value='2'> Like New</input>
+        <input type='radio' value='3'> Lightly Used</input>
+        <input type='radio' value='4'> Moderate Used</input>
+        <input type='radio' value='5'> Heavily Used</input>
+      </form>
+    </div>
   </div>
+  {% if object_list %}
   <div class="col-lg-9 col-md-10 col-sm-12 mx-auto">
     
     {% for object in object_list %}
-      {% if object.hide_listing is False %}
+    {% if object.hide_listing is False %}
     <!-- will need to adjust to create grid with fixed num of columns  -->
     <!-- <div class="col-sm-4"> -->
       <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
-        <div class="row border rounded mb-3" style="min-height: 200px;">
-          
-          <div class="col-lg-2 col-md-2 col-sm-2 mx-2 my-auto" >
-            Cover image of the book
-          </div>
-          
-          <div class="col-lg-3 col-md-5 col-sm-2 my-auto">
-            <a class="text-decoration-none text-dark" href="{{ object.get_absolute_url }}" ><h5> {{ object.book.title }}</h5></a>
-            <p class="text-muted"> {{ object.book.author }}</p>
-            <p>{{ object.book.edition }} Edition</p>
-            <p><strong>ISBN-13:</strong> {{ object.book.isbn }}</p>
-          </div>
-          
-          <div class="my-auto mr-2 col-lg-6 col-md-6 col-sm-6">
-            <span class="mx-2"><strong>Condition:</strong> {{object.get_condition_display}}</span> 
-            <span><strong>Price:</strong> ${{ object.price}}</span>
-            <a href="{{ object.get_absolute_url }}" class="btn-lg btn-primary ml-5">Details</a>
-          </div>
-          
+      <div class="row border rounded mb-3" style="min-height: 200px;">
+        
+        <div class="col-lg-2 col-md-2 col-sm-12 mx-2 my-auto" style="min-height: 50px;">
+          Cover image of the book
         </div>
+        
+        <div class="col-lg-4 col-md-5 col-sm-12 my-auto mr-auto">
+          <a class="text-decoration-none text-dark" href="{{ object.get_absolute_url }}" ><h5> {{ object.book.title }}</h5></a>
+          <p class="text-muted"> {{ object.book.author }}</p>
+          <p> Edition: {{ object.book.edition }}</p>
+          <p><strong>ISBN-13:</strong> {{ object.book.isbn }}</p>
+        </div>
+        
+        <div class="my-auto mr-2 col-lg-3 col-md-3 col-sm-12">
+          <span class="mx-2"><strong>Condition:</strong> {{object.get_condition_display}}</span> 
+          <span><strong>Price:</strong> ${{ object.price}}</span>
+          <a href="{{ object.get_absolute_url }}" class="btn btn-primary ml-5">Details</a>
+        </div>
+        
+      </div>
       {% endif %}
-      
-      <!-- <div class="card rounded m-2" style="width: 25rem;">
-        <div class="card-body">
-          <h5 class="card-title"> {{ object.book.title }}</h5>
-          <p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
-          <p class="card-text">{{ object.book.edition }} Edition</p>
-          <p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
-          <p class="card-text">Price: ${{ object.price}}</p>
-          <a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
-        </div>
-      </div> -->
       {% endfor %}
     </div>
   </div>
+  
+  <!-- <ul>
+    {% for object in object_list %}
+    <li>
+      <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}}
+    </li>
+    {% endfor %}
+  </ul> -->
+  {% else %}
+  <p>There are no current listings.</p>
+  {% endif %} 
 </div>
-<!-- <ul>
-  {% for object in object_list %}
-  <li>
-    <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}}
-  </li>
-  {% endfor %}
-</ul> -->
-{% else %}
-<p>There are no current listings.</p>
-{% endif %} 
 {% endblock %}
