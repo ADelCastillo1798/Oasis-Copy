@@ -26,6 +26,7 @@ urlpatterns = [
     path('clearListing/<uuid:oid>/', views.clearlisting, name='clearlisting'),
     path('removeListing/<uuid:oid>/', views.removelisting, name='removelisting'),
     path('logout/', views.logout_user, name='logout'),
+    path('ban_user/<int:oid>/<int:lid>/', views.ban_user, name='ban_user'),
 
 ]
  
