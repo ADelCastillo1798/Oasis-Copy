@@ -41,7 +41,7 @@
 				<a href="{% url 'ban_user' object.user.id %}" class="btn btn-primary">Ban User</a>
 			</div>
 		</div>
-		
+		<br/>
 		
 		<!---
 		<div class="card col-sm-4 rounded">
@@ -63,17 +63,32 @@
 	<strong>Users with low buyer ratings</strong>
 	<br/>
 	{% for users in low_buyer %}
-		{{users.user}}
-		{{users.buyer_rating}}
+		
+		<div class="card col-sm-4 rounded">
+			<div class="card-body">
+				<h5 class="card-title">User:  {{ users.user }}</h5>
+				<p class="card-text">Rating: {{ users.buyer_rating }}</p>
+				<br/>
+				<a href="{% url 'ban_user' users.user.id %}" class="btn btn-primary">Ban User</a>
+				<a href="{% url 'admin' %}" class="btn btn-primary">Message User</a>
+			</div>
+		</div>
 		<br/>
 	{% endfor %}
-	<br/>
+	
 	<br/>
 	<strong>Users with low seller ratings</strong>
 	<br/>
 	{% for users in low_seller %}
-		{{users.user}}
-		{{users.seller_rating}}
+		<div class="card col-sm-4 rounded">
+			<div class="card-body">
+				<h5 class="card-title">User:  {{ users.user }}</h5>
+				<p class="card-text">Rating: {{ users.buyer_rating }}</p>
+				<br/>
+				<a href="{% url 'ban_user' users.user.id %}" class="btn btn-primary">Ban User</a>
+				<a href="{% url 'admin' %}" class="btn btn-primary">Message User</a>
+			</div>
+		</div>
 		<br/>
 	{% endfor %}
 	<br/>
