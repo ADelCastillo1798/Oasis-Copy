@@ -50,6 +50,9 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="profile">
               <a class="dropdown-item" href="{% url 'profile' %}">View Profile</a>
+              {% if user.is_admin or user.is_superuser %}
+                <a class="dropdown-item" href="{% url 'admin' %}">View Admin</a>
+              {% endif %}
               <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
             </div>
           </li>
