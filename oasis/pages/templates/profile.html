@@ -53,11 +53,16 @@
 	{% else %}
 		<p>You have no suggestions at the moment. Check back later for more.</p>
 	{% endif %}
-
+	
+	<br/>
 	<strong>Buyer Rating:</strong>
+	<br/>
+	{{user.profile.buyer_rating}}
 	<br/>
 	<br/>
 	<strong>Seller Rating:</strong>
+	<br/>
+	{{user.profile.seller_rating}}
 	<br/>
 	<br/>
 	{% if cart %}

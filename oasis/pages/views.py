@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from pages.models import Book, Listing, Conversation, Message, User, ReportListing, NumSearch
+from pages.models import Book, Listing, Conversation, Message, User, ReportListing, NumSearch, Profile
 
 from django.views import generic
 from django.contrib.auth import login, authenticate, logout
@@ -185,6 +185,10 @@ def profile(request):
         my_books = listings.filter(user = request.user)
     else:
         return redirect('/pages/login/')
+    # for i in User.objects.all().filter(username='penguin'):
+        # i.profile.buyer_rating = 2
+        # i.profile.seller_rating = 3
+        # i.save()
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
@@ -192,7 +196,7 @@ def profile(request):
 		'listings':listings,
 		'cart':cart,
 		'left':item,
-        'my_books':my_books
+        'my_books':my_books,
     }
     return render(request, 'profile.html', context=vars)
 
@@ -202,13 +206,20 @@ def admin(request):
     listings = Listing.objects.all()
     item = []
     item = listings.exclude(report = None)
+    low_buyer = Profile.objects.all().exclude(buyer_rating = 5)
+    low_buyer = low_buyer.exclude(buyer_rating = 4)
+    low_buyer = low_buyer.exclude(buyer_rating = 3)
+    low_seller = Profile.objects.all().exclude(seller_rating = 5)
+    low_seller = low_seller.exclude(seller_rating = 4)
+    low_seller = low_seller.exclude(seller_rating = 3)
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
 		'num_users':User.objects.all().count(),
-		#'report':ReportListing.objects.all()
         'report':item,
         'searches':NumSearch.objects.all(),
+        'low_buyer':low_buyer,
+        'low_seller':low_seller,
     }
     return render(request, 'admin_view.html', context=vars)
 
@@ -244,8 +255,8 @@ def logout_user(request):
     logout(request)
     return redirect('/pages/')
 
-def ban_user(request, oid, lid):
-    item = Listing.objects.all().filter(user=lid)
+def ban_user(request, oid):
+    item = Listing.objects.all().filter(user=oid)
     for i in item:
         book = i.book
         i.delete()
