@@ -4,13 +4,17 @@
 
 {% block content %}
 <div class="text-center">
-    <h1>Create You Account</h1>
+    <h1>Create Your Account</h1>
 </div>
 <form class ="col-lg-6 col-md-8 col-sm-10 mx-auto py-2" method='POST'>
     {%csrf_token%}
     {{form|crispy}}
-<button type='submit'>Submit</button>
-Already Have An Account? <a href="{% url 'login' %}">Login</a>
+    <div class="text-center">
+        <button type='submit' class="btn btn-primary btn-lg">Submit</button>
+        <hr class="mt-3">
+        <p>Already Have An Account?</p>
+        <a class="btn btn-primary btn-lg" type="btn" href="{% url 'login' %}">Login</a>
+    </div>
 </form>
 
 
