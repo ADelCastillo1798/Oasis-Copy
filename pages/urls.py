@@ -26,6 +26,7 @@ urlpatterns = [
         name='newconversation'),
     path('admin/', views.admin, name='admin'),
     path('report/<uuid:oid>/', views.reportlisting, name='reportlisting'),
+    path('reportmessage/<uuid:oid>/', views.reportmessage, name='reportmessage'),
     path(
         'messaging/closeconversation/<str:user_id>/<uuid:conversation_id>',
         views.closeconversation,
@@ -35,6 +36,7 @@ urlpatterns = [
     path('admin/', views.admin, name='admin'),
     path('report/<uuid:oid>/', views.reportlisting, name='reportlisting'),
     path('clearListing/<uuid:oid>/', views.clearlisting, name='clearlisting'),
+    path('clearMessage/<uuid:oid>/', views.clearMessage, name='clearMessage'),
     path('removeListing/<uuid:oid>/', views.removelisting, name='removelisting'),
     path('hideListing/<uuid:oid>/', views.hidelisting, name='hidelisting'),
     path('unhideListing/<uuid:oid>/', views.unhidelisting, name='unhidelisting'),

@@ -96,6 +96,7 @@ class Conversation(models.Model):
                         null = True,
                         on_delete = models.SET_NULL
             )
+    report = models.ForeignKey('ReportListing',null = True, on_delete = models.SET_NULL)
     state = models.CharField(
         max_length=1,
         choices=STATUS,

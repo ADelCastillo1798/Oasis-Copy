@@ -19,7 +19,7 @@
 	</div>
 	<hr/>
 	<div class="mb-3">
-		<h3>User Reports</h3>
+		<h3>Listing Reports</h3>
 		<div class="card-deck py-2 mx-auto">
 			{% for object in report %}
 			<div class="card col-sm-4 rounded">
@@ -56,6 +56,51 @@
 		</div>
 	</div>
 	<hr/>
+	
+	<div class="mb-3">
+		<h3>Message Reports</h3>
+		<div class="card-deck py-2 mx-auto">
+			{% for object in mes_rep %}
+			<div class="card col-sm-4 rounded">
+				<div class="card-body">
+					{% if object.buyer == object.report.sent_by %}
+						<h5 class="card-title"> {{ object.seller.first_name }} {{ object.seller.last_name }}</h5>
+						<p class="card-subtitle mb-2 text-muted"> {{ object.seller }}</p>
+						<p class="card-text">Reported by: {{ object.report.sent_by }}</p>
+						<p class="card-text">Report Date: {{ object.report.date_reported }}</p>
+						<a href="{% url 'newuserconversation' object.report.sent_by.id %}" class="btn btn-primary">Message Reporter</a>
+						<a href="{% url 'newuserconversation' object.seller.id %}" class="btn btn-primary mx-1 my-1">Message Reported</a>
+						<a href="{% url 'clearMessage' object.id %}" class="btn btn-primary mx-1 my-1">Clear Report</a>
+						{% if object.seller.is_active %}
+						<a href="{% url 'inactivate_user' object.seller.id %}" class="btn btn-primary my-2">Inactivate User</a>
+						{% else %}
+						<a href="{% url 'activate_user' object.seller.id %}" class="btn btn-primary my-2">Activate User</a>
+						{% endif %}
+						<a href="{% url 'ban_user' object.seller.id %}" class="btn btn-primary mx-1 my-1">Ban User</a>
+					{% else %}
+						<h5 class="card-title"> {{ object.buyer.first_name }} {{ object.buyer.last_name }}</h5>
+						<p class="card-subtitle mb-2 text-muted"> {{ object.buyer }}</p>
+						<p class="card-text">Reported by: {{ object.report.sent_by }}</p>
+						<a href="{% url 'newuserconversation' object.report.sent_by.id %}" class="btn btn-primary">Message Reporter</a>
+						<a href="{% url 'newuserconversation' object.buyer.id %}" class="btn btn-primary mx-1 my-1">Message Reported</a>
+						<a href="{% url 'clearMessage' object.id %}" class="btn btn-primary mx-1 my-1">Clear Report</a>
+						{% if object.buyer.is_active %}
+						<a href="{% url 'inactivate_user' object.buyer.id %}" class="btn btn-primary my-2">Inactivate User</a>
+						{% else %}
+						<a href="{% url 'activate_user' object.buyer.id %}" class="btn btn-primary my-2">Activate User</a>
+						{% endif %}
+						<a href="{% url 'ban_user' object.buyer.id %}" class="btn btn-primary mx-1 my-1">Ban User</a>
+					{% endif %}
+
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<hr/>
+	
+	
+	
 	<div class="mb-3">
 		<h3>Users with Low Buyer Ratings</h3>
 		<div class="card-deck py-2 mx-auto">

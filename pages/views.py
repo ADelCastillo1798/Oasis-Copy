@@ -308,6 +308,7 @@ def admin(request):
     low_seller = Profile.objects.all().exclude(seller_rating = 5)
     low_seller = low_seller.exclude(seller_rating = 4)
     low_seller = low_seller.exclude(seller_rating = 3)
+    messageReports = Conversation.objects.all().exclude(report = None)
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
@@ -316,6 +317,7 @@ def admin(request):
         'searches':NumSearch.objects.all(),
         'low_buyer':low_buyer,
         'low_seller':low_seller,
+        'mes_rep':messageReports,
     }
     return render(request, 'admin_view.html', context=vars)
 
@@ -330,6 +332,15 @@ def reportlisting(request, oid):
     reportedlisting.save()
     return redirect('/')
 
+def reportmessage(request, oid):
+    reportedmessage = Conversation.objects.filter(id=oid).first()
+    new_report = ReportListing()
+    new_report.sent_by = request.user
+    new_report.save()
+    reportedmessage.report = new_report
+    reportedmessage.save()
+    return redirect('messaging')
+
 def clearlisting(request, oid):
     item = []
     item = Listing.objects.all().exclude(report = None)
@@ -337,6 +348,14 @@ def clearlisting(request, oid):
     for i in item:
         i.times_reported = 0
         i.save()
+        i.report.delete()
+    return redirect('/pages/admin/')
+	
+def clearMessage(request, oid):
+    item = []
+    item = Conversation.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
         i.report.delete()
     return redirect('/pages/admin/')
 
