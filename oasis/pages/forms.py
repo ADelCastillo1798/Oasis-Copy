@@ -23,6 +23,7 @@ class ListForm(forms.Form):
     title = forms.CharField(max_length=200)
     author = forms.CharField(max_length=100)
     isbn = forms.CharField(max_length=13)
+    confirm_isbn = forms.CharField(max_length=13)
     edition = forms.CharField(max_length=5) #length here assumes no more than 999th edition -- seems like a reasonable assumption
     pub_year = forms.CharField(max_length=5) 
     condition = forms.ChoiceField(choices=CONDITION)

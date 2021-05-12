@@ -5,7 +5,13 @@
 {% block content %}
 <div class="text-center">
     <h1>Create Your Account</h1>
+    {% for message in messages %}
+  		<p>
+      		{{ message }}
+  		</p>
+	{% endfor %}
 </div>
+
 <form class ="col-lg-6 col-md-8 col-sm-10 mx-auto py-2" method='POST'>
     {%csrf_token%}
     {{form|crispy}}

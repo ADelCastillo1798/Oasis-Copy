@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 import json
 from cart.cart import Cart
+from django.contrib import messages
 
 
 def home(request):
@@ -36,9 +37,13 @@ def clientcreation(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            email = form.cleaned_data.get('email')
+            if not email.endswith("@bc.edu"):
+                messages.error(request,'email must be a boston college email')
+                return redirect('/pages/clientcreation')
+            new_user =form.save()
             username = form.cleaned_data.get('username')
-            login(request, username)
+            login(request, new_user)
             return redirect('/')
     else:
         form = UserRegistrationForm()
@@ -126,6 +131,10 @@ def sellerlisting(request):
             pub_year = form.cleaned_data.get('pub_year')
             condition = form.cleaned_data.get('condition')
             price = form.cleaned_data.get('price')
+            confirm_isbn = form.cleaned_data.get("confirm_isbn")
+            if isbn != confirm_isbn:
+                messages.error(request,'isbn do not match')
+                return redirect('/pages/sellerlisting')
             new_book = Book(
                 title=title,
                 author=author,
