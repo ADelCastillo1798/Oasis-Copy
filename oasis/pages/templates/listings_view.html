@@ -97,10 +97,10 @@
           <p><strong>Sold by:</strong> {{ object.user.username }} </p>
         </div>
         
-        <div class="my-auto mr-2 col-lg-3 col-md-3 col-sm-12">
-          <span class="mx-2"><strong>Condition:</strong> {{object.get_condition_display}}</span> 
-          <span><strong>Price:</strong> ${{ object.price}}</span>
-          <a href="{{ object.get_absolute_url }}" class="btn btn-primary ml-5">Details</a>
+        <div class="my-auto col-lg-4 col-md-3 col-sm-12">
+          <p><strong>Condition:</strong> {{object.get_condition_display}}</p> 
+          <p><strong>Price:</strong> ${{ object.price}}</p>
+          <a href="{{ object.get_absolute_url }}" class="btn btn-primary w-100 mb-3">Details</a>
         </div>
         
       </div>

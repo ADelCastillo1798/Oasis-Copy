@@ -10,8 +10,8 @@
 			<p class="mb-2"><strong>Buyer Rating:</strong> {{user.profile.buyer_rating}}</p>
 			<p><strong>Seller Rating:</strong> {{user.profile.seller_rating}}</p>
 		</div>
-
-		<div class="mb-5">
+		<hr/>
+		<div class="mb-3">
 			<h2>My Books:</h2>
 			{% if my_books %}
 				<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
@@ -34,8 +34,8 @@
 				<a class="btn btn-primary" href="{% url 'sellerlisting' %}">Sell A Book</a>
 			{% endif %}
 		</div>
-
-		<div class="mb-5">
+		<hr/>
+		<div class="mb-3">
 			<h2>Suggestions:</h2>
 			{% if left %}
 				<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
@@ -56,8 +56,8 @@
 				<p>You have no suggestions at the moment. Check back later for more.</p>
 			{% endif %}
 		</div>
-
-		<div class="mb-5">
+		<hr/>
+		<div class="mb-3">
 			<h2>Your Cart:</h2>
 			{% if cart %}
 			
@@ -82,7 +82,7 @@
 			<p>Your cart is empty.</p>
 			{% endif %} 
 		</div>
-
+		<hr/>
 		{% if user.is_admin or user.is_superuser %}
 		<div class="text-center my-2">
 			<a class="btn btn-primary btn-lg" href="{% url 'admin' %}">Go to Admin Page</a>
