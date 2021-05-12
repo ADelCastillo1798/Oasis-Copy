@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 
-
 {% block content %}
 <!-- <h1>All Listings ({{ object_list|length }})</h1> -->
 
@@ -37,7 +36,8 @@
       Filters
     </button>
       <div class="collapse" id="conditions">
-        <form>
+        <form >
+
           {{ form.condition_field }}
           {{ form.title_field }}
           {{ form.author_field }}

@@ -118,22 +118,17 @@ class ListingView(generic.ListView):
         if title_field is None or title_field is '':
             queryset = queryset
         else:
-            title_field = title_field.split(':')[1]
-            title_field = title_field[2:-2]
+
             queryset = queryset.filter(book__title=title_field)
 
         if author_field is None or author_field is '':
             queryset = queryset
         else:
-            author_field = author_field.split(':')[1]
-            author_field = author_field[2:-2]
             queryset = queryset.filter(book__author=author_field)
 
         if edition_field is None or edition_field is '':
             queryset = queryset
         else:
-            edition_field = edition_field.split(':')[1]
-            edition_field = edition_field[2:-2]
             queryset = queryset.filter(book__edition=edition_field)
         return queryset
 
