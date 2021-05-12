@@ -5,10 +5,12 @@
 	{% if user.is_authenticated %}
 
 		<h1 class="text-center my-3">Welcome to your profile, {{user.username}}!</h1>
+
 		<div class="text-center my-3">
 			<p class="mb-2"><strong>Buyer Rating:</strong> {{user.profile.buyer_rating}}</p>
 			<p><strong>Seller Rating:</strong> {{user.profile.seller_rating}}</p>
 		</div>
+
 		<div class="mb-5">
 			<h2>My Books:</h2>
 			{% if my_books %}
@@ -32,6 +34,7 @@
 				<a class="btn btn-primary" href="{% url 'sellerlisting' %}">Sell A Book</a>
 			{% endif %}
 		</div>
+
 		<div class="mb-5">
 			<h2>Suggestions:</h2>
 			{% if left %}
@@ -53,7 +56,8 @@
 				<p>You have no suggestions at the moment. Check back later for more.</p>
 			{% endif %}
 		</div>
-		<div>
+
+		<div class="mb-5">
 			<h2>Your Cart:</h2>
 			{% if cart %}
 			
@@ -73,20 +77,19 @@
 
 			{% endfor %}
 			</div>
-			<br/>
 			
 			{% else %}
 			<p>Your cart is empty.</p>
 			{% endif %} 
 		</div>
-		{% if user.username in "reinersr" %}
-			
-			<a class="btn btn-primary" href="{% url 'admin' %}">Go to Admin Page</a>
-			<br/>
-			<br/>
-			
+
+		{% if user.is_admin or user.is_superuser %}
+		<div class="text-center my-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'admin' %}">Go to Admin Page</a>
+		</div>
+
 		{% endif %}
-		<div class="text-center">
+		<div class="text-center my-2">
 			<a class="btn btn-primary btn-lg" href="{% url 'logout' %}">Log out</a>
 		</div>
 
