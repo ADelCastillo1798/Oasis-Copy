@@ -16,14 +16,7 @@ from django.db.models import Q
 import json
 from cart.cart import Cart
 from django.contrib import messages
-from flask import Flask, render_template, request, redirect, url_for
-import os, json, boto3
 
-app = Flask(__name__)
-
-if __name__ == '__main__':
-  port = int(os.environ.get('PORT', 5000))
-  app.run(host='0.0.0.0', port = port)
 
 
 def home(request):
@@ -178,6 +171,7 @@ def sellerlisting(request):
             condition = form.cleaned_data.get('condition')
             price = form.cleaned_data.get('price')
             confirm_isbn = form.cleaned_data.get("confirm_isbn")
+            avatar_url = request.form["avatar-url"]
             if isbn != confirm_isbn:
                 messages.error(request,'isbn do not match')
                 return redirect('/pages/sellerlisting')
@@ -396,3 +390,5 @@ def inactivate_user(request, oid):
 def activate_user(request, oid):
     users = User.objects.filter(id=oid).update(is_active=True)
     return redirect('/pages/admin/')
+
+
