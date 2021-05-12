@@ -52,6 +52,9 @@
   </div>
   {% if object_list %}
   <div class="col-lg-9 col-md-10 col-sm-12 mx-auto">
+    <form method='get' action='#'>
+      <input class="btn btn-primary" type="submit" value="Price: Low to High" name="Price: Low to High"/>
+    </form>
     
     {% for object in object_list %}
     {% if object.hide_listing is False %}

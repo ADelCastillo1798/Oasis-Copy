@@ -84,6 +84,14 @@ class ListingView(generic.ListView):
 
     def get_queryset(self, *args, **kwargs):
 
+
+        queryset = Listing.objects.all()
+        
+        print(queryset)
+
+        if self.request.GET.get('Price: Low to High') == 'Price: Low to High':
+            queryset = queryset.order_by()
+
         val = self.request.GET.get("q")
         if val:
             queryset = Listing.objects.filter(
@@ -94,8 +102,7 @@ class ListingView(generic.ListView):
             for i in NumSearch.objects.all():
                 i.count = i.count + 1
                 i.save()
-        else:
-            queryset = Listing.objects.all()
+        
 		
         condition_field = self.request.GET.get('condition_field')
         title_field = self.request.GET.get('title_field')
