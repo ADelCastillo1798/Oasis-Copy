@@ -25,7 +25,7 @@ SECRET_KEY = 'l=s)a==weru%!45!x+s@ztf-r&gy+)t3)nw*rd31h*e%p@^5l^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1','.herokuapp.com',]
 
 #AUTH_USER_MODEL = 'pages.CustomUser'
 
