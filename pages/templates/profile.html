@@ -71,7 +71,7 @@
 					<p class="card-text">${{ product.price}} </p>
 					<p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
 					<a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary mb-1">Remove From Cart</a>
-					<a href = "{% url 'newconversation' product.product.id%}" class="btn btn-primary mt-1" >Contact Seller</a>
+					<a href = "{% url 'newconversation' product.product.id%}" class="btn btn-primary mb-1" >Contact Seller</a>
 					</div>
 				</div>
 
