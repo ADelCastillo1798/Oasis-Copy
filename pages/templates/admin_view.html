@@ -35,8 +35,13 @@
 					<a href="{% url 'newuserconversation' object.report.sent_by.id %}" class="btn btn-primary">Message Reporter</a>
 					<p class="card-text">Report Date: {{object.report.date_reported}}</p>
 					<hr/>
+					{% if object.hide_listing %}
+						<a href="{% url 'unhidelisting' object.id %}" class="btn btn-primary mx-1 my-1">Unhide Listing</a>
+					{% else %}
+						<a href="{% url 'hidelisting' object.id %}" class="btn btn-primary mx-1 my-1">Hide Listing</a>
+					{% endif %}
 					<a href="{% url 'removelisting' object.id %}" class="btn btn-primary mx-1 my-1">Remove Listing</a>
-					<a href="{% url 'newuserconversation' object.user.id %}" class="btn btn-primary mx-1 my-1">Message Reported</a>
+					<a href="{% url 'newuserconversation' object.user.id %}" class="btn btn-primary mx-1 my-1">Message Lister</a>
 					<hr/>
 					{% if object.user.is_active %}
 					<a href="{% url 'inactivate_user' object.user.id %}" class="btn btn-primary my-2">Inactivate User</a>

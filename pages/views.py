@@ -348,6 +348,24 @@ def removelisting(request, oid):
         book.delete()
     return redirect('/pages/admin/')
 
+def hidelisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.hide_listing=True
+        i.save()
+    return redirect('/pages/admin/')
+
+def unhidelisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.hide_listing=False
+        i.save()
+    return redirect('/pages/admin/')
+
 def logout_user(request):
     logout(request)
     return redirect('/pages/')
