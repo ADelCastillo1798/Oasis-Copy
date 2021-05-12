@@ -31,6 +31,7 @@
 					<p class="card-text">Price: ${{ object.price}}</p>
 					<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
 					<p class="card-text">Reporting Party: {{object.report.sent_by}}</p>
+					<p class="card-text">Times Reported: {{object.times_reported}}</p>
 					<a href="{% url 'newuserconversation' object.report.sent_by.id %}" class="btn btn-primary">Message Reporter</a>
 					<p class="card-text">Report Date: {{object.report.date_reported}}</p>
 					<hr/>

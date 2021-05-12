@@ -333,6 +333,8 @@ def clearlisting(request, oid):
     item = Listing.objects.all().exclude(report = None)
     item = item.filter(id=oid)
     for i in item:
+        i.times_reported = 0
+        i.save()
         i.report.delete()
     return redirect('/pages/admin/')
 
