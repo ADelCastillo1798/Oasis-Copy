@@ -23,6 +23,7 @@
     {% for conversation in conversations %}
 
         <button type="button" class="list-group-item list-group-item-action" onclick="buttonClick(this,'{{conversation.id}}')" >
+          
           {% if conversation.buyer.id == request.user.id %}
             {{conversation.seller.first_name}} {{conversation.seller.last_name}}
           {% else %}
@@ -193,16 +194,45 @@
         //removes dashes from conversation_id because django doesn't like them idk why
         + '/'
     );
+    
     //for debugging print chatSocket to verify it's different than before
     console.log(chatSocket);
 
+    function sendMessage(msg){
+      // Wait until the state of the socket is not ready and send the message when it is...
+      waitForSocketConnection(chatSocket, function(){
+          console.log("message sent!!!");
+          chatSocket.send(msg);
+      });
+    }
+
+    // Make the function wait until the connection is made...
+    function waitForSocketConnection(socket, callback){
+        setTimeout(
+            function () {
+                if (socket.readyState === 1) {
+                    console.log("Connection is made")
+                    if (callback != null){
+                        callback();
+                    }
+                } else {
+                    console.log("wait for connection...")
+                    waitForSocketConnection(socket, callback);
+                }
+
+            }, 1000); // wait 5 milisecond for the connection...
+    }
+    
+    console.log(chatSocket);
     //function to print new message (either sent or received)
     chatSocket.onmessage = function(e){
       const data = JSON.parse(e.data);
       console.log(data);
       loadMessage(data);
     }
-
+    chatSocket.onopen = function(e){
+      console.log("is open");
+    }
 
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
@@ -220,7 +250,8 @@
         //get text from input field
         const message = messageInputDom.value;
         //send message
-        chatSocket.send(JSON.stringify({
+        sendMessage(JSON.stringify({
+        // chatSocket.send(JSON.stringify({
             'message': message,
             'conversation_id': conversation_id,
             'sentby_id': currentUser,
