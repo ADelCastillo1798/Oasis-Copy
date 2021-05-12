@@ -37,3 +37,7 @@ class FilterForm(Form):
     CONDITION_CHOICES = (('1', 'New'), ('2', 'Like New'), ('3', 'Lightly Used'),
              ('4', 'Moderately Used'), ('5', 'Heavily Used'))
     condition_field = ChoiceField(choices=CONDITION_CHOICES)
+    title_field = forms.ModelChoiceField(queryset = Listing.objects.all().values('book__title'), initial=0)
+    author_field = forms.ModelChoiceField(queryset = Listing.objects.all().values('book__author'), initial=0)
+    edition_field = forms.ModelChoiceField(queryset = Listing.objects.all().values('book__edition'), initial=0)
+    

@@ -98,16 +98,48 @@ class ListingView(generic.ListView):
             queryset = Listing.objects.all()
 		
         condition_field = self.request.GET.get('condition_field')
+        title_field = self.request.GET.get('title_field')
+        author_field = self.request.GET.get('author_field')
+        edition_field = self.request.GET.get('edition_field')
+
+        #print(title_field)
+        #title_field = title_field['book__title']
+
         if condition_field is None:
             queryset = queryset
         else:
             queryset = queryset.filter(condition=condition_field)
+
+        if title_field is None:
+            queryset = queryset
+        else:
+            title_field = title_field.split(':')[1]
+            title_field = title_field[2:-2]
+            queryset = queryset.filter(book__title=title_field)
+
+        if author_field is None:
+            queryset = queryset
+        else:
+            author_field = author_field.split(':')[1]
+            author_field = author_field[2:-2]
+            queryset = queryset.filter(book__author=author_field)
+
+        if edition_field is None:
+            queryset = queryset
+        else:
+            edition_field = edition_field.split(':')[1]
+            edition_field = edition_field[2:-2]
+            queryset = queryset.filter(book__edition=edition_field)
         return queryset
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['form'] = FilterForm(initial={
             'condition_field': self.request.GET.get('condition_field', ''),
+            'title_field': self.request.GET.get('title_field', ''),
+            'author_field': self.request.GET.get('author_field', ''),
+            'edition_field': self.request.GET.get('edition_field', ''),
+
         })
 
         return context
