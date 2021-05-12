@@ -70,6 +70,7 @@
 						<p class="card-text">Report Date: {{ object.report.date_reported }}</p>
 						<a href="{% url 'newuserconversation' object.report.sent_by.id %}" class="btn btn-primary">Message Reporter</a>
 						<a href="{% url 'newuserconversation' object.seller.id %}" class="btn btn-primary mx-1 my-1">Message Reported</a>
+						<hr/>
 						<a href="{% url 'clearMessage' object.id %}" class="btn btn-primary mx-1 my-1">Clear Report</a>
 						{% if object.seller.is_active %}
 						<a href="{% url 'inactivate_user' object.seller.id %}" class="btn btn-primary my-2">Inactivate User</a>
@@ -83,6 +84,7 @@
 						<p class="card-text">Reported by: {{ object.report.sent_by }}</p>
 						<a href="{% url 'newuserconversation' object.report.sent_by.id %}" class="btn btn-primary">Message Reporter</a>
 						<a href="{% url 'newuserconversation' object.buyer.id %}" class="btn btn-primary mx-1 my-1">Message Reported</a>
+						<hr/>
 						<a href="{% url 'clearMessage' object.id %}" class="btn btn-primary mx-1 my-1">Clear Report</a>
 						{% if object.buyer.is_active %}
 						<a href="{% url 'inactivate_user' object.buyer.id %}" class="btn btn-primary my-2">Inactivate User</a>
@@ -111,8 +113,7 @@
 					<p class="card-text">Rating: {{ users.buyer_rating }}</p>
 					<br/>
 					<a href="{% url 'newuserconversation' users.user.id %}" class="btn btn-primary">Message User</a>
-					<br/>
-					<br/>
+					<hr/>
 					{% if users.user.is_active %}
 					<a href="{% url 'inactivate_user' users.user.id %}" class="btn btn-primary mx-1 my-1">Inactivate User</a>
 					{% else %}
@@ -135,8 +136,7 @@
 					<p class="card-text">Rating: {{ users.seller_rating }}</p>
 					<br/>
 					<a href="{% url 'newuserconversation' users.user.id %}" class="btn btn-primary">Message User</a>
-					<br/>
-					<br/>
+					<hr/>
 					{% if users.user.is_active %}
 					<a href="{% url 'inactivate_user' users.user.id %}" class="btn btn-primary mx-1 my-1">Inactivate User</a>
 					{% else %}
