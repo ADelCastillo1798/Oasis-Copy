@@ -23,7 +23,11 @@
     {% for conversation in conversations %}
 
         <button type="button" class="list-group-item list-group-item-action" onclick="buttonClick(this,'{{conversation.id}}')" >
-          {{ conversation.buyer.first_name }} {{conversation.buyer.last_name}}
+          {% if conversation.buyer.id == request.user.id %}
+            {{conversation.seller.first_name}} {{conversation.seller.last_name}}
+          {% else %}
+            {{ conversation.buyer.first_name }} {{conversation.buyer.last_name}}
+          {% endif %}
         </button>
 
     {% endfor %}

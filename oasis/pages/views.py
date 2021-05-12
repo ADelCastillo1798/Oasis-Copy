@@ -96,7 +96,7 @@ class ListingView(generic.ListView):
                 i.save()
         else:
             queryset = Listing.objects.all()
-        
+		
         condition_field = self.request.GET.get('condition_field')
         if condition_field is None:
             queryset = queryset
@@ -321,4 +321,12 @@ def ban_user(request, oid):
     u = User.objects.all().filter(id=oid)
     for i in u:
         i.delete()
+    return redirect('/pages/admin/')
+
+def inactivate_user(request, oid):
+    users = User.objects.filter(id=oid).update(is_active=False)
+    return redirect('/pages/admin/')
+
+def activate_user(request, oid):
+    users = User.objects.filter(id=oid).update(is_active=True)
     return redirect('/pages/admin/')
