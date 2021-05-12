@@ -83,17 +83,18 @@
     <!-- will need to adjust to create grid with fixed num of columns  -->
     <!-- <div class="col-sm-4"> -->
       <!-- <a href="{{ object.get_absolute_url }}">{{ object.book.title }}</a> {{object.book.author}} -->
-      <div class="row border rounded mb-3" style="min-height: 200px;">
+      <div class="row border rounded mb-3 py-1" style="min-height: 200px;">
         
         <div class="col-lg-2 col-md-2 col-sm-12 mx-2 my-auto" style="min-height: 50px;">
           Cover image of the book
         </div>
         
         <div class="col-lg-4 col-md-5 col-sm-12 my-auto mr-auto">
-          <a class="text-decoration-none text-dark" href="{{ object.get_absolute_url }}" ><h5> {{ object.book.title }}</h5></a>
+          <a class="text-decoration-none text-dark" href="{{ object.get_absolute_url }}" ><h4> {{ object.book.title }}</h4></a>
           <p class="text-muted"> {{ object.book.author }}</p>
-          <p> Edition: {{ object.book.edition }}</p>
+          <p><strong>Edition:</strong> {{ object.book.edition }}</p>
           <p><strong>ISBN-13:</strong> {{ object.book.isbn }}</p>
+          <p><strong>Sold by:</strong> {{ object.user.username }} </p>
         </div>
         
         <div class="my-auto mr-2 col-lg-3 col-md-3 col-sm-12">
