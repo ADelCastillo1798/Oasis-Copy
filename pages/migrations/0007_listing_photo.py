@@ -9,4 +9,10 @@ class Migration(migrations.Migration):
         ('pages', '0006_photo'),
     ]
 
-
+    operations = [
+        migrations.AddField(
+            model_name='listing',
+            name='photo',
+            field=s3direct.fields.S3DirectField(blank=True),
+        ),
+    ]
