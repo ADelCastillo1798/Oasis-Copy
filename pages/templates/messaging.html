@@ -26,6 +26,7 @@
           
           {% if conversation.buyer.id == request.user.id %}
             {{conversation.seller.first_name}} {{conversation.seller.last_name}}
+			<a href="{% url 'reportmessage' conversation.id %}" class="btn btn-primary mx-1 my-1">Report</a>
           {% else %}
             {{ conversation.buyer.first_name }} {{conversation.buyer.last_name}}
           {% endif %}

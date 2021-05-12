@@ -34,6 +34,9 @@ class ListForm(forms.Form):
         fields=['title', 'author', 'isbn', 'edition', 'pub_year']
 
 class FilterForm(Form):
-    CONDITION_CHOICES = (('1', 'New'), ('2', 'Like New'), ('3', 'Lightly Used'),
+    CONDITION_CHOICES = ((0, 'All'), ('1', 'New'), ('2', 'Like New'), ('3', 'Lightly Used'),
              ('4', 'Moderately Used'), ('5', 'Heavily Used'))
-    condition_field = ChoiceField(choices=CONDITION_CHOICES)
+    condition_field = ChoiceField(choices=CONDITION_CHOICES, required=False)
+    title_field = forms.ModelChoiceField(queryset = Listing.objects.all().values_list('book__title', flat=True), empty_label='All',initial=0, required=False)
+    author_field = forms.ModelChoiceField(queryset = Listing.objects.all().values_list('book__author', flat=True), empty_label='All',initial=0, required=False)
+    edition_field = forms.ModelChoiceField(queryset = Listing.objects.all().values_list('book__edition',flat=True).distinct(), empty_label='All',initial=0, required=False)

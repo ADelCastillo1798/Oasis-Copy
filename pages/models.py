@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
 User = settings.AUTH_USER_MODEL
 
 
@@ -95,6 +96,7 @@ class Conversation(models.Model):
                         null = True,
                         on_delete = models.SET_NULL
             )
+    report = models.ForeignKey('ReportListing',null = True, on_delete = models.SET_NULL)
     state = models.CharField(
         max_length=1,
         choices=STATUS,
@@ -145,3 +147,11 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+class Photo(models.Model):
+    uuid = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False,
+    )
+    created_at = models.DateTimeField(auto_now_add=True) 
+    title = models.CharField(max_length=100)
+    photo = models.FileField()

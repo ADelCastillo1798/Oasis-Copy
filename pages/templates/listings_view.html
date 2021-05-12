@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 
-
 {% block content %}
 <!-- <h1>All Listings ({{ object_list|length }})</h1> -->
 
@@ -20,63 +19,42 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-12 col-lg-12 py-2 mx-auto">
+    <form class="form-inline justify-content-center">
+      <!-- <form name="search" method="GET" action="{% url 'listings' %}"> 
+        <input type="text" name="q" placeholder="Search"/>
+        <button class="btn btn-primary " type="submit">Search</button>
+      </form> -->
+    </form>
+  </div>
+</div>
+
 <div class="row mx-auto">
   <div class="col-lg-2 ml-2 py-2 my-2">
-    <button class="btn-lg btn-primary mb-2 w-100" type="button" data-toggle="collapse" data-target="#filters" aria-expanded="false" aria-controls="collapseExample">
+    <button class="btn-lg btn-primary mb-2 w-100" type="button" data-toggle="collapse" data-target="#conditions" aria-expanded="false" aria-controls="collapseExample">
       Filters
     </button>
-    <form class="collapse" id="filters">
-      <button class="btn btn-primary my-2 w-100">Apply</button>
-      <div>
-        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#titles" aria-expanded="false" aria-controls="titles">
-          Title
-        </a>
-      </div>
-      <div class="collapse" id="titles">
-        <form class="col-md-5" method="get">
-          <div class="input-group">
-            <select name="type" class="selectpicker" multiple>
-              {% for object in object_list %}
-                <option>{{ object.book.title }}</option>
-              {% endfor %}
-            </select>    
-            <span class="input-group-btn"><button class="btn btn-primary" type="submit">Apply</button></span>
-          </div>
-        </form>
-      </div>
-      <div>
-        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#authors" aria-expanded="false" aria-controls="authors">
-          Authors
-        </a>
-      </div>
-      <div class="collapse" id="authors">
-        {% for object in object_list %}
-        <p>{{ object.book.author }}</p>
-        {% endfor %}
-      </div>
-      <div>
-        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#editions" aria-expanded="false" aria-controls="editions">
-          Edition
-        </a>
-      </div>
-      <div class="collapse" id="editions">
-        Distinct Edition Buttons
-      </div>
-      <div>
-        <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#conditions" aria-expanded="false" aria-controls="conditions">
-          Condition
-        </a>
-      </div>
       <div class="collapse" id="conditions">
-        <form>
+        <form >
+
           {{ form.condition_field }}
+          {{ form.title_field }}
+          {{ form.author_field }}
+          {{ form.edition_field }}
+
           <input type="submit" class="btn btn-primary" value="Apply">
         </form>
       </div>
+
+
     </form>
   </div>
   {% if object_list %}
   <div class="col-lg-9 col-md-10 col-sm-12 mx-auto">
+    <form method='get' action='#'>
+      <input class="btn btn-primary" type="submit" value="Price: Low to High" name="Price: Low to High"/>
+    </form>
     
     {% for object in object_list %}
     {% if object.hide_listing is False %}

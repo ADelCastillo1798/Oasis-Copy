@@ -18,6 +18,7 @@ from cart.cart import Cart
 from django.contrib import messages
 
 
+
 def home(request):
 
     # Generate counts of some of the main objects
@@ -84,6 +85,12 @@ class ListingView(generic.ListView):
 
     def get_queryset(self, *args, **kwargs):
 
+
+        queryset = Listing.objects.all()
+        
+        if self.request.GET.get('Price: Low to High') == 'Price: Low to High':
+            queryset = queryset.order_by('price')
+
         val = self.request.GET.get("q")
         if val:
             queryset = Listing.objects.filter(
@@ -94,20 +101,45 @@ class ListingView(generic.ListView):
             for i in NumSearch.objects.all():
                 i.count = i.count + 1
                 i.save()
-        else:
-            queryset = Listing.objects.all()
+        
 		
         condition_field = self.request.GET.get('condition_field')
-        if condition_field is None:
+        title_field = self.request.GET.get('title_field')
+        author_field = self.request.GET.get('author_field')
+        edition_field = self.request.GET.get('edition_field')
+
+        #print(title_field)
+        #title_field = title_field['book__title']
+        if condition_field is None or condition_field is '0':
             queryset = queryset
         else:
             queryset = queryset.filter(condition=condition_field)
+
+        if title_field is None or title_field is '':
+            queryset = queryset
+        else:
+
+            queryset = queryset.filter(book__title=title_field)
+
+        if author_field is None or author_field is '':
+            queryset = queryset
+        else:
+            queryset = queryset.filter(book__author=author_field)
+
+        if edition_field is None or edition_field is '':
+            queryset = queryset
+        else:
+            queryset = queryset.filter(book__edition=edition_field)
         return queryset
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['form'] = FilterForm(initial={
             'condition_field': self.request.GET.get('condition_field', ''),
+            'title_field': self.request.GET.get('title_field', ''),
+            'author_field': self.request.GET.get('author_field', ''),
+            'edition_field': self.request.GET.get('edition_field', ''),
+
         })
 
         return context
@@ -132,6 +164,7 @@ def sellerlisting(request):
             condition = form.cleaned_data.get('condition')
             price = form.cleaned_data.get('price')
             confirm_isbn = form.cleaned_data.get("confirm_isbn")
+            avatar_url = request.form["avatar-url"]
             if isbn != confirm_isbn:
                 messages.error(request,'isbn do not match')
                 return redirect('/pages/sellerlisting')
@@ -268,6 +301,7 @@ def admin(request):
     low_seller = Profile.objects.all().exclude(seller_rating = 5)
     low_seller = low_seller.exclude(seller_rating = 4)
     low_seller = low_seller.exclude(seller_rating = 3)
+    messageReports = Conversation.objects.all().exclude(report = None)
     vars = {
         'num_books':num_books,
 		'num_listings':num_listings,
@@ -276,6 +310,7 @@ def admin(request):
         'searches':NumSearch.objects.all(),
         'low_buyer':low_buyer,
         'low_seller':low_seller,
+        'mes_rep':messageReports,
     }
     return render(request, 'admin_view.html', context=vars)
 
@@ -290,9 +325,28 @@ def reportlisting(request, oid):
     reportedlisting.save()
     return redirect('/')
 
+def reportmessage(request, oid):
+    reportedmessage = Conversation.objects.filter(id=oid).first()
+    new_report = ReportListing()
+    new_report.sent_by = request.user
+    new_report.save()
+    reportedmessage.report = new_report
+    reportedmessage.save()
+    return redirect('messaging')
+
 def clearlisting(request, oid):
     item = []
     item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.times_reported = 0
+        i.save()
+        i.report.delete()
+    return redirect('/pages/admin/')
+	
+def clearMessage(request, oid):
+    item = []
+    item = Conversation.objects.all().exclude(report = None)
     item = item.filter(id=oid)
     for i in item:
         i.report.delete()
@@ -306,6 +360,24 @@ def removelisting(request, oid):
         book = i.book
         i.delete()
         book.delete()
+    return redirect('/pages/admin/')
+
+def hidelisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.hide_listing=True
+        i.save()
+    return redirect('/pages/admin/')
+
+def unhidelisting(request, oid):
+    item = []
+    item = Listing.objects.all().exclude(report = None)
+    item = item.filter(id=oid)
+    for i in item:
+        i.hide_listing=False
+        i.save()
     return redirect('/pages/admin/')
 
 def logout_user(request):
@@ -330,3 +402,5 @@ def inactivate_user(request, oid):
 def activate_user(request, oid):
     users = User.objects.filter(id=oid).update(is_active=True)
     return redirect('/pages/admin/')
+
+
