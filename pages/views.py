@@ -88,10 +88,8 @@ class ListingView(generic.ListView):
 
         queryset = Listing.objects.all()
         
-        print(queryset)
-
         if self.request.GET.get('Price: Low to High') == 'Price: Low to High':
-            queryset = queryset.order_by()
+            queryset = queryset.order_by('price')
 
         val = self.request.GET.get("q")
         if val:
