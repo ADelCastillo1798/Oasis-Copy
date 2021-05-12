@@ -16,6 +16,14 @@ from django.db.models import Q
 import json
 from cart.cart import Cart
 from django.contrib import messages
+from flask import Flask, render_template, request, redirect, url_for
+import os, json, boto3
+
+app = Flask(__name__)
+
+if __name__ == '__main__':
+  port = int(os.environ.get('PORT', 5000))
+  app.run(host='0.0.0.0', port = port)
 
 
 def home(request):

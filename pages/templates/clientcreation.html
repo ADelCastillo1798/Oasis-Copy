@@ -12,6 +12,8 @@
 	{% endfor %}
 </div>
 
+
+
 <form class ="col-lg-6 col-md-8 col-sm-10 mx-auto py-2" method='POST'>
     {%csrf_token%}
     {{form|crispy}}
