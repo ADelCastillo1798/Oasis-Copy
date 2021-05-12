@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 
 {% block content %}
@@ -38,10 +39,10 @@
       <div class="collapse" id="conditions">
         <form >
 
-          {{ form.condition_field }}
-          {{ form.title_field }}
-          {{ form.author_field }}
-          {{ form.edition_field }}
+          {{ form.condition_field | as_crispy_field }}
+          {{ form.title_field | as_crispy_field }}
+          {{ form.author_field | as_crispy_field}}
+          {{ form.edition_field | as_crispy_field }}
 
           <input type="submit" class="btn btn-primary" value="Apply">
         </form>
