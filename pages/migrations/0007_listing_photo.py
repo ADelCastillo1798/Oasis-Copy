@@ -14,6 +14,5 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='listing',
             name='photo',
-            field=s3direct.fields.S3DirectField(blank=True),
         ),
     ]
