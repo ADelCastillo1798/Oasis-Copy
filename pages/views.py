@@ -253,9 +253,9 @@ def closeconversation(request, user_id, conversation_id):
 
 @login_required(login_url="/pages/login")
 def newconversation(request, id):
-    posted_by = Listing.objects.get(id=id).user
-    conversation, is_new = Conversation.objects.get_or_create(
-        id=id, seller=posted_by, buyer=request.user)
+    attached_listing = Listing.objects.get(id=id)
+    posted_by = attached_listing.user
+    conversation, is_new = Conversation.objects.get_or_create(seller=posted_by, buyer=request.user, listing=attached_listing)
     return redirect("/pages/messaging")
 
 @login_required(login_url="/pages/login")

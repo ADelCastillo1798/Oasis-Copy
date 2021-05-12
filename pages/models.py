@@ -104,6 +104,7 @@ class Conversation(models.Model):
         default=0,
         help_text='Conversation status',
     )
+    listing = models.ForeignKey(Listing, null = True, on_delete = models.SET_NULL)
 
 
 class Message(models.Model):
