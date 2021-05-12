@@ -25,22 +25,21 @@
     <button class="btn-lg btn-primary mb-2 w-100" type="button" data-toggle="collapse" data-target="#filters" aria-expanded="false" aria-controls="collapseExample">
       Filters
     </button>
-    <form class="collapse" id="filters">
-      <button class="btn btn-primary my-2 w-100">Apply</button>
+    <div class="collapse" id="filters">
       <div>
         <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#titles" aria-expanded="false" aria-controls="titles">
           Title
         </a>
       </div>
       <div class="collapse" id="titles">
-        <form class="col-md-5" method="get">
+        <form method="get">
           <div class="input-group">
             <select name="type" class="selectpicker" multiple>
               {% for object in object_list %}
                 <option>{{ object.book.title }}</option>
               {% endfor %}
             </select>    
-            <span class="input-group-btn"><button class="btn btn-primary" type="submit">Apply</button></span>
+            <span class="input-group-btn"><button class="btn btn-primary btn-sm my-1" type="submit">Apply</button></span>
           </div>
         </form>
       </div>
@@ -50,9 +49,6 @@
         </a>
       </div>
       <div class="collapse" id="authors">
-        {% for object in object_list %}
-        <p>{{ object.book.author }}</p>
-        {% endfor %}
       </div>
       <div>
         <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#editions" aria-expanded="false" aria-controls="editions">
@@ -60,7 +56,6 @@
         </a>
       </div>
       <div class="collapse" id="editions">
-        Distinct Edition Buttons
       </div>
       <div>
         <a class="btn btn-sm btn-outline-primary w-100 my-1" data-toggle="collapse" data-target="#conditions" aria-expanded="false" aria-controls="conditions">
@@ -70,10 +65,10 @@
       <div class="collapse" id="conditions">
         <form>
           {{ form.condition_field }}
-          <input type="submit" class="btn btn-primary" value="Apply">
+          <input type="submit" class="btn btn-primary btn-sm w-100 text-center my-1" value="Apply">
         </form>
       </div>
-    </form>
+    </div>
   </div>
   {% if object_list %}
   <div class="col-lg-9 col-md-10 col-sm-12 mx-auto">
