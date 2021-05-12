@@ -3,124 +3,114 @@
 {%block content%}
 
 {% if user.is_admin or user.is_superuser %}
-	<strong>ADMIN</strong>
-	<br/>
-	Welcome admin {{user.username}}!
-	<br/>
-	<br/>
-	There have been {{ num_books }} books put up for sale.
-	<br/>
-	{{num_listings}} of those are still for sale.
-	<br/>
-	There are {{num_users}} users registered.
-	<br/>
-	<br/>
-	{% for num in searches %}
-		There have been {{num.count}} searches.
-	{% endfor %}
-	<!-- Need to figure out how to count searches -->
-	<br/>
-	<br/>
-	<strong>User Reports</strong>
-	<br/>
-	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-		{% for object in report %}
+<div class="col-lg-10 col-md-11 col-sm-12 mx-auto">
+	<div class="text-center mb-3">
+		<h1>Admin Page</h1>
+		<p class="h2 text-muted">Welcome admin, {{user.username}}!</p>
+	</div>
+	<div class="mb-3">
+		<h3 class="">Basic Metrics</h3>
+		<p>There have been <strong>{{ num_books }}</strong> books put up for sale.</p>
+		<p><strong>{{num_listings}}</strong> of those are still for sale.</p>
+		<p>There are <strong>{{num_users}}</strong> users registered.</p>
+		{% for num in searches %}
+		<p>There have been <strong>{{num.count}}</strong> searches.</p>
+		{% endfor %}
+	</div>
+	<hr/>
+	<div class="mb-3">
+		<h3>User Reports</h3>
+		<div class="card-deck py-2 mx-auto">
+			{% for object in report %}
 			<div class="card col-sm-4 rounded">
-			<div class="card-body">
-				<h5 class="card-title"> {{ object.book.title }}</h5>
-				<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
-				<p class="card-text">{{ object.book.edition }} Edition</p>
-				<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
-				<p class="card-text">Price: ${{ object.price}}</p>
-				<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
-				<br/>
-				<br/>
-				<p class="card-text">Reporting Party: {{object.report.sent_by}}</p>
-				<a href="{% url 'newuserconversation' object.report.sent_by.id %}" class="btn btn-primary">Message Reporter</a>
-				<p class="card-text">Report Date: {{object.report.date_reported}}</p>
-				<a href="{% url 'removelisting' object.id %}" class="btn btn-primary">Remove Listing</a>
-				<a href="{% url 'newuserconversation' object.user.id %}" class="btn btn-primary">Message Reported</a>
-				<br/>
-				<br/>
-				{% if object.user.is_active %}
-					<a href="{% url 'inactivate_user' object.user.id %}" class="btn btn-primary">Inactivate User</a>
-				{% else %}
-					<a href="{% url 'activate_user' object.user.id %}" class="btn btn-primary">Activate User</a>
-				{% endif %}
-				<a href="{% url 'ban_user' object.user.id %}" class="btn btn-primary">Ban User</a>
-				<br/>
-				<br/>
-				<a href="{% url 'clearlisting' object.id %}" class="btn btn-primary">Clear Report</a>
+				<div class="card-body">
+					<h5 class="card-title"> {{ object.book.title }}</h5>
+					<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
+					<p class="card-text">{{ object.book.edition }} Edition</p>
+					<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+					<p class="card-text">Price: ${{ object.price}}</p>
+					<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+					<p class="card-text">Reporting Party: {{object.report.sent_by}}</p>
+					<a href="{% url 'newuserconversation' object.report.sent_by.id %}" class="btn btn-primary">Message Reporter</a>
+					<p class="card-text">Report Date: {{object.report.date_reported}}</p>
+					<hr/>
+					<a href="{% url 'removelisting' object.id %}" class="btn btn-primary mx-1 my-1">Remove Listing</a>
+					<a href="{% url 'newuserconversation' object.user.id %}" class="btn btn-primary mx-1 my-1">Message Reported</a>
+					<hr/>
+					{% if object.user.is_active %}
+					<a href="{% url 'inactivate_user' object.user.id %}" class="btn btn-primary my-2">Inactivate User</a>
+					{% else %}
+					<a href="{% url 'activate_user' object.user.id %}" class="btn btn-primary my-2">Activate User</a>
+					{% endif %}
+					<a href="{% url 'ban_user' object.user.id %}" class="btn btn-primary my-2">Ban User</a>
+					<a href="{% url 'clearlisting' object.id %}" class="btn btn-primary my-2">Clear Report</a>
+				</div>
 			</div>
+			{% endfor %}
 		</div>
-		<br/>
-		
-	{% endfor %}
 	</div>
-	<br/>
-	<br/>
-	<strong>Users with low buyer ratings</strong>
-	<br/>
-	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-	{% for users in low_buyer %}
-		<div class="card col-sm-4 rounded">
-			<div class="card-body">
-				<h5 class="card-title">User:  {{ users.user }}</h5>
-				<p class="card-text">Rating: {{ users.buyer_rating }}</p>
-				<br/>
-				<a href="{% url 'newuserconversation' users.user.id %}" class="btn btn-primary">Message User</a>
-				<br/>
-				<br/>
-				{% if users.user.is_active %}
-					<a href="{% url 'inactivate_user' users.user.id %}" class="btn btn-primary">Inactivate User</a>
-				{% else %}
-					<a href="{% url 'activate_user' users.user.id %}" class="btn btn-primary">Activate User</a>
-				{% endif %}
-				<a href="{% url 'ban_user' users.user.id %}" class="btn btn-primary">Ban User</a>
+	<hr/>
+	<div class="mb-3">
+		<h3>Users with Low Buyer Ratings</h3>
+		<div class="card-deck py-2 mx-auto">
+			{% for users in low_buyer %}
+			<div class="card col-sm-4 rounded">
+				<div class="card-body">
+					<h5 class="card-title">User:  {{ users.user }}</h5>
+					<p class="card-text">Rating: {{ users.buyer_rating }}</p>
+					<br/>
+					<a href="{% url 'newuserconversation' users.user.id %}" class="btn btn-primary">Message User</a>
+					<br/>
+					<br/>
+					{% if users.user.is_active %}
+					<a href="{% url 'inactivate_user' users.user.id %}" class="btn btn-primary mx-1 my-1">Inactivate User</a>
+					{% else %}
+					<a href="{% url 'activate_user' users.user.id %}" class="btn btn-primary mx-1 my-1">Activate User</a>
+					{% endif %}
+					<a href="{% url 'ban_user' users.user.id %}" class="btn btn-primary mx-1 my-1">Ban User</a>
+				</div>
 			</div>
+			{% endfor %}
 		</div>
-		<br/>
-	{% endfor %}
 	</div>
-	
-	<br/>
-	<strong>Users with low seller ratings</strong>
-	<br/>
-	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-	{% for users in low_seller %}
-		<div class="card col-sm-4 rounded">
-			<div class="card-body">
-				<h5 class="card-title">User:  {{ users.user }}</h5>
-				<p class="card-text">Rating: {{ users.buyer_rating }}</p>
-				<br/>
-				<a href="{% url 'newuserconversation' users.user.id %}" class="btn btn-primary">Message User</a>
-				<br/>
-				<br/>
-				{% if users.user.is_active %}
-					<a href="{% url 'inactivate_user' users.user.id %}" class="btn btn-primary">Inactivate User</a>
-				{% else %}
-					<a href="{% url 'activate_user' users.user.id %}" class="btn btn-primary">Activate User</a>
-				{% endif %}
-				<a href="{% url 'ban_user' users.user.id %}" class="btn btn-primary">Ban User</a>
+	<hr/>
+	<div class="mb-3">
+		<h3>Users with Low Seller Ratings</h3>
+		<div class="card-deck py-2 mx-auto">
+			{% for users in low_seller %}
+			<div class="card col-sm-4 rounded">
+				<div class="card-body">
+					<h5 class="card-title">User:  {{ users.user }}</h5>
+					<p class="card-text">Rating: {{ users.buyer_rating }}</p>
+					<br/>
+					<a href="{% url 'newuserconversation' users.user.id %}" class="btn btn-primary">Message User</a>
+					<br/>
+					<br/>
+					{% if users.user.is_active %}
+					<a href="{% url 'inactivate_user' users.user.id %}" class="btn btn-primary mx-1 my-1">Inactivate User</a>
+					{% else %}
+					<a href="{% url 'activate_user' users.user.id %}" class="btn btn-primary mx-1 my-1">Activate User</a>
+					{% endif %}
+					<a href="{% url 'ban_user' users.user.id %}" class="btn btn-primary mx-1 my-1">Ban User</a>
+				</div>
 			</div>
+			<br/>
+			{% endfor %}
 		</div>
-		<br/>
-	{% endfor %}
 	</div>
-	<br/>
-	<br/>
-	<a class="btn btn-primary" href="{% url 'admin:index' %}">Account Management</a>
-	<br/>
-	<br/>
-	
-{% else %}
-	<br/>
-	<br/>
-	<strong>You are not an admin</strong>
-	<br/>
-	<br/>
-	<a class="btn btn-primary" href="{% url 'index' %}">Return Home</a>
-{% endif %}
+	<hr/>
+	<div class="text-center">
+		<h4>Click below to access deeper database controls</h4>
+		<a class="btn btn-primary btn-lg" href="{% url 'admin:index' %}">Account Management</a>
+	</div>
+	{% else %}
+		<h1>You are not an Admin</h1>
+		<p>Your account does not have permission to access this page. Click below to be taken back to the home page.</p>
+		<a class="btn btn-lg btn-primary" href="{% url 'index' %}">Return Home</a>
+	{% endif %}
+</div>
+
+
 
 
 
