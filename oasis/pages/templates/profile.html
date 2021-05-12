@@ -1,105 +1,98 @@
 {% extends 'base.html' %}
 
 {%block content%}
+<div class="col-lg-10 col-md-11 col-sm-12 mx-auto">
+	{% if user.is_authenticated %}
 
-{% if user.is_authenticated %}
-
-	<br/>
-	Welcome {{user.username}}
-	<br/>
-	<a class="btn btn-primary" href="{% url 'logout' %}">Log out</a>
-	<br/>
-	<br/>
-	<strong>My books:</strong>
-	{% if my_books %}
-		<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-		  {% for object in my_books %}
-			<div class="card col-sm-4 rounded">
-			  <div class="card-body">
-				<h5 class="card-title"> {{ object.book.title }}</h5>
-				<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
-				<p class="card-text">{{ object.book.edition }} Edition</p>
-				<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
-				<p class="card-text">Price: ${{ object.price}}</p>
-				<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
-			  </div>
-			</div>
-		  {% endfor %}
+		<h1 class="text-center my-3">Welcome to your profile, {{user.username}}!</h1>
+		<div class="text-center my-3">
+			<p class="mb-2"><strong>Buyer Rating:</strong> {{user.profile.buyer_rating}}</p>
+			<p><strong>Seller Rating:</strong> {{user.profile.seller_rating}}</p>
 		</div>
-		<a class="btn btn-primary" href="{% url 'sellerlisting' %}">List another book</a>
-	{% else %}
-		<p>You have not listed any books yet.</p>
-		<a class="btn btn-primary" href="{% url 'sellerlisting' %}">List a book</a>
-	{% endif %}
-	<br/>
-	<br/>
-
-	<strong>Suggestions:</strong>
-	{% if left %}
-		<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-		  {% for object in left %}
-			<div class="card col-sm-4 rounded">
-			  <div class="card-body">
-				<h5 class="card-title"> {{ object.book.title }}</h5>
-				<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
-				<p class="card-text">{{ object.book.edition }} Edition</p>
-				<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
-				<p class="card-text">Price: ${{ object.price}}</p>
-				<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
-			  </div>
-			</div>
-		  {% endfor %}
+		<div class="mb-5">
+			<h2>My Books:</h2>
+			{% if my_books %}
+				<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
+				{% for object in my_books %}
+					<div class="card col-sm-4 rounded">
+					<div class="card-body">
+						<a class="text-decoration-none text-dark card-title" href="{{ object.get_absolute_url }}" ><h5> {{ object.book.title }}</h5></a>
+						<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
+						<p class="card-text">{{ object.book.edition }} Edition</p>
+						<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+						<p class="card-text">Price: ${{ object.price}}</p>
+						<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+					</div>
+					</div>
+				{% endfor %}
+				</div>
+				<a class="btn btn-primary" href="{% url 'sellerlisting' %}">Sell Another Book</a>
+			{% else %}
+				<p>You have not listed any books yet.</p>
+				<a class="btn btn-primary" href="{% url 'sellerlisting' %}">Sell A Book</a>
+			{% endif %}
 		</div>
-	{% else %}
-		<p>You have no suggestions at the moment. Check back later for more.</p>
-	{% endif %}
-	
-	<br/>
-	<strong>Buyer Rating:</strong>
-	<br/>
-	{{user.profile.buyer_rating}}
-	<br/>
-	<br/>
-	<strong>Seller Rating:</strong>
-	<br/>
-	{{user.profile.seller_rating}}
-	<br/>
-	<br/>
-	{% if cart %}
-	<Strong>Your Cart:</Strong>
-	<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
-	  {% for product in cart %}
-			<div class="card col-sm-4 rounded">
-			<div class="card-body">
-			  <h5 class="card-title"> {{ product.product.book.title }}</h5>
-			  <p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
-			  <p class="card-text">{{ product.product.book.edition }} Edition</p>
-			  <p class="card-text">${{ product.price}} </p>
-			  <p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
-			  <a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary">Remove From Cart</a>
-			  <a href = "{% url 'newconversation' product.product.id%}" class="btn btn-primary" >Contact Seller</a>
+		<div class="mb-5">
+			<h2>Suggestions:</h2>
+			{% if left %}
+				<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
+				{% for object in left %}
+					<div class="card col-sm-4 rounded">
+					<div class="card-body">
+						<a class="text-decoration-none text-dark card-title" href="{{ object.get_absolute_url }}" ><h5> {{ object.book.title }}</h5></a>
+						<p class="card-subtitle mb-2 text-muted"> {{ object.book.author }}</p>
+						<p class="card-text">{{ object.book.edition }} Edition</p>
+						<p class="card-text">ISBN-13: {{ object.book.isbn }}</p>
+						<p class="card-text">Price: ${{ object.price}}</p>
+						<a href="{{ object.get_absolute_url }}" class="btn btn-primary">Details</a>
+					</div>
+					</div>
+				{% endfor %}
+				</div>
+			{% else %}
+				<p>You have no suggestions at the moment. Check back later for more.</p>
+			{% endif %}
+		</div>
+		<div>
+			<h2>Your Cart:</h2>
+			{% if cart %}
+			
+			<div class="card-deck col-lg-10 col-sm-12 py-2 mx-auto">
+			{% for product in cart %}
+					<div class="card col-sm-4 rounded">
+					<div class="card-body">
+					<h5 class="card-title"> {{ product.product.book.title }}</h5>
+					<p class="card-subtitle mb-2 text-muted"> {{ product.product.book.author }}</p>
+					<p class="card-text">{{ product.product.book.edition }} Edition</p>
+					<p class="card-text">${{ product.price}} </p>
+					<p class="card-text">ISBN-13: {{ product.product.book.isbn }}</p>
+					<a href="{% url 'cart:itemclear' product.product.id%}" class="btn btn-primary mb-1">Remove From Cart</a>
+					<a href = "{% url 'newconversation' product.product.id%}" class="btn btn-primary mt-1" >Contact Seller</a>
+					</div>
+				</div>
+
+			{% endfor %}
 			</div>
-		  </div>
+			<br/>
+			
+			{% else %}
+			<p>Your cart is empty.</p>
+			{% endif %} 
+		</div>
+		{% if user.username in "reinersr" %}
+			
+			<a class="btn btn-primary" href="{% url 'admin' %}">Go to Admin Page</a>
+			<br/>
+			<br/>
+			
+		{% endif %}
+		<div class="text-center">
+			<a class="btn btn-primary btn-lg" href="{% url 'logout' %}">Log out</a>
+		</div>
 
-	  {% endfor %}
-	</div>
-	<br/>
-	
 	{% else %}
-	<p>Your cart is empty.</p>
-	{% endif %} 
+		<meta http-equiv="refresh" content="time; URL=../login" />
 
-	{% if user.username in "reinersr" %}
-		
-		<a class="btn btn-primary" href="{% url 'admin' %}">Go to Admin Page</a>
-		<br/>
-		<br/>
-		
 	{% endif %}
-
-{% else %}
-	<meta http-equiv="refresh" content="time; URL=../login" />
-
-{% endif %}
-
+</div>
 {%endblock%}
